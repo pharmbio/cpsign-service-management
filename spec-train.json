@@ -1,0 +1,45 @@
+{
+  "pipeline": {
+    "name": "LogD-training"
+  },
+  "transform": {
+    "image": "snapple49/cpsign-docker:latest",
+    "cmd": [ "/bin/bash" ],
+    "stdin": [
+      "mkdir -p /pfs/out/logs",
+      "touch /pfs/out/logs/stdout.txt",
+      "java -jar cpsign-0.7.7.jar train --license /mnt/lic/license @/pfs/input/params.txt > /pfs/out/logs/stdout.txt"
+    ],
+    "secrets": [
+      {
+        "name": "logd-license",
+        "mount_path": "/mnt/lic/"
+      }
+    ]
+  },
+  "standby": true,
+  "resource_limits": {
+    "memory": "1024Mi",
+    "cpu": 1.0
+  },
+  "resource_requests": {
+      "memory" : "512Mi",
+      "cpu": 0.5
+  },
+  "input": {
+    "cross": [
+      {
+        "atom": {
+          "repo": "data",
+          "glob": "/"
+        }
+      },
+      {
+        "atom": {
+          "repo": "input",
+          "glob": "/"
+        }
+      }
+    ]
+  }
+}
