@@ -1,0 +1,14 @@
+{
+    "database" : {
+        "host" : "DB_HOSTNAME",
+        "user" : "DB_USERNAME",
+        "db_name" : "DB_DATABASE",
+        "password" : "DB_PASSWORD"
+    },
+    
+    "database_query" : "DB_QUERY",
+    "smi_filename" : "SMI_FILENAME",
+
+    "cpsign_training" : {}
+
+}
