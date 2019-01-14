@@ -17,6 +17,5 @@ ADD pipeline_setup /home/pipeline_setup
 ADD configuration.json /home/configuration.json
 
 ENV CONFIG_FILE=/home/configuration.json
-ENV ADDRESS=${pachd_address}
 
 WORKDIR /home
