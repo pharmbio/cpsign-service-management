@@ -6,9 +6,15 @@
         "password" : "DB_PASSWORD"
     },
     
-    "database_query" : "DB_QUERY",
-    "smi_filename" : "SMI_FILENAME",
+    "query" : {
+        "database_query" : "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
+        "query_limit" : 1000000,
+        "smi_columns" : ["canonical_smiles, acd_logd"],
+        "smi_filename" : "SMI_FILENAME"
+    },
 
-    "cpsign_training" : {}
+    "cpsign_training" : {
+        
+    }
 
 }

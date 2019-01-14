@@ -3,6 +3,12 @@
 # format data to CPSign-compatible format
 # add data to pachyderm repo
 
+import python_pachyderm
+import pymysql
+import jinja2
+from json import load
+from os import environ
+
 def fileToBinary(filepath):
     bytesArray = None
     with open(filepath, 'r') as _file:
@@ -10,30 +16,32 @@ def fileToBinary(filepath):
 
     return bytesArray
 
-
-import python_pachyderm
-import pymysql
-
-DB_PASSWORD = ""
-DB_USERNAME = "root"
-DB_HOST = "logd-chembl-mysql"
-DB_DATABASE = "chembl_24"
-
+configuration = None
 try:
-    with open("/etc/creds/rootpw", "r") as pwfile:
-        DB_PASSWORD = pwfile.readline()
+    with open(environ.get("CONFIG_FILE"), "r") as config_file:
+        configuration = load(config_file)
 except FileNotFoundError:
-    pass
+    print("Config file does not exist, this probably won't work...")
+    #TODO: create exit mechanism that functions from pachyderm worker and stores logs/stderr
 
-if DB_PASSWORD == "":
-    DB_PASSWORD = str(input("Password for db user root: "))
+DB_PASSWORD = configuration.get("DB_PASSWORD", "") #NOTE: should not be provided plain in json...
+DB_USERNAME = configuration["database"]["user"]
+DB_HOSTNAME = configuration["database"]["host"]
+DB_DATABASE = configuration["database"]["db_name"]
 
-#data_limit = input("Limit: >")
-data_query = "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno limit 10000;"
+if not DB_PASSWORD:
+    try:
+        with open("/etc/creds/rootpw", "r") as pwfile:
+            DB_PASSWORD = pwfile.readline()
+    except FileNotFoundError:
+        pass
+
+data_limit = configuration["query"]["query_limit"]
+data_query = configuration["query"]["database_query"].format(" limit {}".format(data_limit) if data_limit else "")
 result = None
 
 # Connect to DB and get result of query
-sql_connection = pymysql.Connect(host=DB_HOST, user=DB_USERNAME, password=DB_PASSWORD, database=DB_DATABASE)
+sql_connection = pymysql.Connect(host=DB_HOSTNAME, user=DB_USERNAME, password=DB_PASSWORD, database=DB_DATABASE)
 
 try:
     with sql_connection.cursor() as cursor:
@@ -43,18 +51,23 @@ finally:
     sql_connection.close()
 
 # Reformat data
-lines = ["canonical_smiles\tacd_logd\t\n"]
+lines = ["".join([value+"\t" for value in configuration["query"]["smi_columns"] + [""]]) + "\n"]
 for (smiles, value) in result:
     lines.append("{}\t{}\t\n".format(smiles, value.to_eng_string() if value else ""))
 
 # Write data to file
-smi_file_name = "chembl_training_data.smi"
+smi_file_name = configuration["query"]["smi_filename"]
 if result:
     with open("./{}".format(smi_file_name), "w") as output:
         output.writelines(lines)
         output.flush()
 
+# Generate params template with jinja2
+jinja_params = configuration["cpsign"]
+# TODO: jinja generate params.txt and populate with training data file name
+
 # Add file to PFS
+# TODO: rewrite to use pfs out as pipeline repo, 
 pfs_client = python_pachyderm.PfsClient()
 with pfs_client.commit("data", "master") as cmt:
     pfs_client.put_file_bytes(cmt, "/{}".format(smi_file_name), fileToBinary("./{}".format(smi_file_name)))
