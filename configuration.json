@@ -1,4 +1,5 @@
 {
+    "workflow_name" : "LogD",
     "database" : {
         "host" : "DB_HOSTNAME",
         "user" : "DB_USERNAME",

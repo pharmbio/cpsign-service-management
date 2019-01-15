@@ -5,16 +5,9 @@
 
 import python_pachyderm
 import pymysql
-import jinja2
+from jinja2 import Template
 from json import load
 from os import environ
-
-def fileToBinary(filepath):
-    bytesArray = None
-    with open(filepath, 'r') as _file:
-        bytesArray = bytes(_file.read(None), "UTF-8")
-
-    return bytesArray
 
 configuration = None
 try:
@@ -24,7 +17,7 @@ except FileNotFoundError:
     print("Config file does not exist, this probably won't work...")
     #TODO: create exit mechanism that functions from pachyderm worker and stores logs/stderr
 
-DB_PASSWORD = configuration.get("DB_PASSWORD", "") #NOTE: should not be provided plain in json...
+DB_PASSWORD = configuration.get("DB_PASSWORD", None) #NOTE: should not be provided plain in json...
 DB_USERNAME = configuration["database"]["user"]
 DB_HOSTNAME = configuration["database"]["host"]
 DB_DATABASE = configuration["database"]["db_name"]
@@ -58,17 +51,23 @@ for (smiles, value) in result:
 # Write data to file
 smi_file_name = configuration["query"]["smi_filename"]
 if result:
-    with open("./{}".format(smi_file_name), "w") as output:
+    with open("/pfs/out/data/{}".format(smi_file_name), "w") as output:
         output.writelines(lines)
         output.flush()
 
 # Generate params template with jinja2
-jinja_params = configuration["cpsign"]
 # TODO: jinja generate params.txt and populate with training data file name
+jinja_template_file = ""
+jinja_params = configuration["cpsign"]
+with open(jinja_template_file) as tmpl:
+    template = Template(tmpl.read())
+param_file_content = template.render(data=jinja_params)
+
+param_additional_lines = ["\n", "--train-data\n/pfs/{}-ingestion/data/{}\n".format(configuration["workflow_name"], smi_file_name)]
+for line in param_additional_lines:
+    param_file_content += line
 
 # Add file to PFS
 # TODO: rewrite to use pfs out as pipeline repo, 
-pfs_client = python_pachyderm.PfsClient()
-with pfs_client.commit("data", "master") as cmt:
-    pfs_client.put_file_bytes(cmt, "/{}".format(smi_file_name), fileToBinary("./{}".format(smi_file_name)))
-
+with open("/pfs/out/input/params.txt", "w") as param_file:
+    param_file.write(param_file_content)
