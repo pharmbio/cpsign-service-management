@@ -5,7 +5,7 @@ liblinear
 --train-data
 /pfs/data/chembl_training_data.smi
 --nr-models
-5
+1
 --cost
 1
 --model-out
