@@ -11,7 +11,7 @@ from os import environ
 
 configuration = None
 try:
-    with open(environ.get("CONFIG_FILE"), "r") as config_file:
+    with open("/pfs/config/configuration.json", "r") as config_file:
         configuration = load(config_file)
 except FileNotFoundError:
     print("Config file does not exist, this probably won't work...")

@@ -1,0 +1,24 @@
+{
+    "pipeline": {
+      "name": "LogD-upload"
+    },
+    "transform": {
+      "image": "pharmbio/modelweb-uploader:latest",
+      "cmd": [ "/home/upload_model.sh " ]
+    },
+    "standby": true,
+    "resource_limits": {
+      "memory": "1G",
+      "cpu": 1.0
+    },
+    "resource_requests": {
+        "memory" : "512Mi",
+        "cpu": 0.5
+    },
+    "input" : {
+      "atom": {
+        "repo": "LogD-training",
+        "glob": "/"
+      }
+    }
+  }
