@@ -4,7 +4,13 @@
     },
     "transform": {
       "image": "pharmbio/modelweb-uploader:latest",
-      "cmd": [ "/home/upload_model.sh " ]
+      "cmd": [ "/home/upload_model.sh $(cat /mnt/api-info/modelweb-url) $(cat /mnt/api-info/keycloak-url) porco-rosso /pfs/LogD-training/models/" ],
+      "secrets": [
+        {
+          "name": "modelweb-api-info",
+          "mount_path": "/mnt/api-info/"
+        }
+      ]
     },
     "standby": true,
     "resource_limits": {

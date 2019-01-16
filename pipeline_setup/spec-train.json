@@ -3,12 +3,12 @@
     "name": "LogD-training"
   },
   "transform": {
-    "image": "snapple49/cpsign-docker:latest",
+    "image": "snapple49/cpsign-docker:c0.6.16",
     "cmd": [ "/bin/bash" ],
     "stdin": [
       "mkdir -p /pfs/out/logs",
       "touch /pfs/out/logs/stdout.txt",
-      "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.7.7.jar train --license /mnt/lic/license @/pfs/input/params.txt > /pfs/out/logs/stdout.txt"
+      "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.6.16.jar train --license /mnt/lic/license @/pfs/input/params.txt > /pfs/out/logs/stdout.txt"
     ],
     "secrets": [
       {

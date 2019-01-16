@@ -12,10 +12,9 @@ RUN apt update && apt install -y --no-install-recommends apt-transport-https ca-
 
 ADD params.txt /home/
 ADD README.md /home/
-ADD data_ingestion.py /home/
+ADD pipeline_dockers/ingestion/data_ingestion.py /home/
 ADD pipeline_setup /home/pipeline_setup
 ADD configuration.json /home/configuration.json
 
-ENV CONFIG_FILE=/home/configuration.json
 
 WORKDIR /home

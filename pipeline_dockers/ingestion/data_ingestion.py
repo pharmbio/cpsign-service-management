@@ -2,12 +2,10 @@
 # get data from chembl database
 # format data to CPSign-compatible format
 # add data to pachyderm repo
-
-import python_pachyderm
 import pymysql
 from jinja2 import Template
 from json import load
-from os import environ
+from os import environ, makedirs
 
 configuration = None
 try:
@@ -24,7 +22,7 @@ DB_DATABASE = configuration["database"]["db_name"]
 
 if not DB_PASSWORD:
     try:
-        with open("/etc/creds/rootpw", "r") as pwfile:
+        with open("/etc/creds/mysql-root-password", "r") as pwfile:
             DB_PASSWORD = pwfile.readline()
     except FileNotFoundError:
         pass
@@ -51,6 +49,7 @@ for (smiles, value) in result:
 # Write data to file
 smi_file_name = configuration["query"]["smi_filename"]
 if result:
+    makedirs("/pfs/out/data", exist_ok=True)
     with open("/pfs/out/data/{}".format(smi_file_name), "w") as output:
         output.writelines(lines)
         output.flush()
@@ -69,5 +68,6 @@ for line in param_additional_lines:
 
 # Add file to PFS
 # TODO: rewrite to use pfs out as pipeline repo, 
+makedirs("/pfs/out/input")
 with open("/pfs/out/input/params.txt", "w") as param_file:
     param_file.write(param_file_content)
