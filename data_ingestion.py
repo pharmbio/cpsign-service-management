@@ -5,7 +5,7 @@
 
 import python_pachyderm
 import pymysql
-from jinja2 import Template
+from jinja2 import FileSystemLoader, Environment
 from json import load
 from os import environ
 
@@ -57,11 +57,10 @@ if result:
 
 # Generate params template with jinja2
 # TODO: jinja generate params.txt and populate with training data file name
-jinja_template_file = ""
-jinja_params = configuration["cpsign"]
-with open(jinja_template_file) as tmpl:
-    template = Template(tmpl.read())
-param_file_content = template.render(data=jinja_params)
+file_loader = FileSystemLoader('./params/')
+env = Environment(loader=file_loader)
+template = env.get_template("params.j2")
+param_file_content = template.render(data=configuration)
 
 param_additional_lines = ["\n", "--train-data\n/pfs/{}-ingestion/data/{}\n".format(configuration["workflow_name"], smi_file_name)]
 for line in param_additional_lines:
