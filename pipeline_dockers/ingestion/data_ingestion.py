@@ -61,7 +61,8 @@ env = Environment(loader=file_loader)
 template = env.get_template("params.j2")
 param_file_content = template.render(data=configuration)
 
-param_additional_lines = ["\n", "--train-data\n/pfs/{}-ingestion/data/{}\n".format(configuration["workflow_name"], smi_file_name)]
+# TODO: parameterize cpsign version parameters
+param_additional_lines = ["\n", "--trainfile\n/pfs/{}-ingestion/data/{}\n".format(configuration["workflow_name"], smi_file_name)]
 for line in param_additional_lines:
     param_file_content += line
 
