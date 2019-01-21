@@ -3,10 +3,16 @@
       "name": "LogD-ingestion"
     },
     "transform": {
-      "image": "pharmbio/cpsign-database-ingestion",
+      "image": "pharmbio/cpsign-database-ingestion:cps-0.6.16",
       "cmd": [ "/bin/bash" ],
       "stdin": [
         "python3 data_ingestion.py"
+      ],
+      "secrets": [
+        {
+          "name": "logd-chembl-mysql",
+          "mount_path": "/etc/creds/"
+        }
       ]
     },
     "standby": true,

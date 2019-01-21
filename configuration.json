@@ -1,21 +1,28 @@
 {
     "workflow_name" : "LogD",
     "database" : {
-        "host" : "DB_HOSTNAME",
-        "user" : "DB_USERNAME",
-        "db_name" : "DB_DATABASE",
-        "password" : "DB_PASSWORD"
+        "host" : "logd-chembl-mysql",
+        "user" : "root",
+        "db_name" : "chembl_24"
     },
-    
+
     "query" : {
         "database_query" : "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
-        "query_limit" : 1000000,
+        "query_limit" : 10000,
         "smi_columns" : ["canonical_smiles, acd_logd"],
-        "smi_filename" : "SMI_FILENAME"
+        "smi_filename" : "chembl_training_data.smi"
     },
 
     "cpsign" : {
-        
+        "cptype": 2,
+        "impl": "liblinear",
+        "nr-models": 1,
+        "cost": 1,
+        "model-out": "/pfs/out/models/logd_chembl_output.jar",
+        "model-name": "LogD_10000_6_16",
+        "nonconf-measure": "normalized",
+        "epsilon": 0.0001,
+        "logfile": "/pfs/out/logs/logfile.log"
     }
 
 }

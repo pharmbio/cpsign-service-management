@@ -8,7 +8,7 @@
     "stdin": [
       "mkdir -p /pfs/out/logs",
       "touch /pfs/out/logs/stdout.txt",
-      "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.6.16.jar train --license /mnt/lic/license @/pfs/input/params.txt > /pfs/out/logs/stdout.txt"
+      "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.6.16.jar train --license /mnt/lic/license @/pfs/LogD-ingestion/input/params.txt > /pfs/out/logs/stdout.txt"
     ],
     "secrets": [
       {
