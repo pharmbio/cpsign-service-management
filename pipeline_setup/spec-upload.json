@@ -1,0 +1,33 @@
+{
+    "pipeline": {
+      "name": "LogD-upload"
+    },
+    "transform": {
+      "image": "pharmbio/modelweb-uploader:stable-1",
+      "cmd": [ "/bin/sh" ],
+      "stdin": [
+        "/home/upload_model.sh $(cat /mnt/api-info/modelweb-url) $(cat /mnt/api-info/keycloak-url) LogD /pfs/LogD-training/models/ > /pfs/out/log.txt"
+      ],
+      "secrets": [
+        {
+          "name": "modelweb-api-info",
+          "mount_path": "/mnt/api-info/"
+        }
+      ]
+    },
+    "standby": true,
+    "resource_limits": {
+      "memory": "1G",
+      "cpu": 1.0
+    },
+    "resource_requests": {
+        "memory" : "512Mi",
+        "cpu": 0.5
+    },
+    "input" : {
+      "atom": {
+        "repo": "LogD-training",
+        "glob": "/"
+      }
+    }
+  }
