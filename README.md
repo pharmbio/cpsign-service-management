@@ -4,7 +4,7 @@
 
 ## Initial setup of workflow
 ### Create manager pod
-In order to communicate with Pachyderm and the used database, you need to work from a pod within the cluster. Thus first create a pod from the following yaml file: `logd-manager-pod.yaml` with the command `kubectl create -f logd-manager-pod.yaml --namespace=labinf` .
+In order to communicate with Pachyderm and the preferred database, you need to work from a pod within the cluster. Thus first create a pod from the following yaml file: `manager-pod.yaml` with the command `kubectl create -f manager-pod.yaml --namespace=labinf` .
 
 To connect to the pod, use `kubectl exec -it <pod-name> bash` .
 
@@ -23,12 +23,12 @@ If desired, the manager pod comes with `kubectl`installed, but you need to provi
 To communicate with Pachyderm via its command-line tool `pachctl`, one needs to either set the environment variable `ADDRESS` equal to the IP of the `pachd` service (i.e. `export ADDRESS=<pachd IP>`), or to execute the `pachctl`'s built-in `port-forward` command like so: `pachctl port-forward --namespace=<desired namespace> &` .
 
 ### Set up pachyderm pipelines
-modify pipeline specifications as neccessary and create a repo called `config`, then create the pipelines from the specs
+Modify pipeline specifications as neccessary and create a repo called `config`, then create the pipelines from the specs.
 
 ## Running training in workflow
 The following steps assumes that you are connected to the `logd-manager` pod
 ### Upload configuration file to pachyderm for cpsign execution
-Modify configuration.json as neccessary and add to pachyderm repo config: `pachctl put-file config master -o -f configuration.json`
+Modify the json file `configuration.json` as neccessary and add it to the pachyderm repo `config`via the command: `pachctl put-file config master -o -f configuration.json` .
 
 ### (Advanced) modify pachyderm pipeline
-If you wish to modify the pipeline, edit the specification json in the cpsign-setup folder (which exists within the pod), then run: `pachctl update-pipeline -f spec-train.json`
+If you wish to modify the pipeline, edit the specification json under the `cpsign-setup` folder (which exists within the pod), then run: `pachctl update-pipeline -f spec-train.json` .
