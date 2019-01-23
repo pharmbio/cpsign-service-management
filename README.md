@@ -1,3 +1,5 @@
+![workflow_overview](/imgs/cpsign_workflow.png)
+
 # Setup
 ## Create Logd-manager pod
 First create a pod from the following yaml file: `logd-manager-pod.yaml` with the command `kubectl create -f logd-manager-pod.yaml --namespace=labinf`
