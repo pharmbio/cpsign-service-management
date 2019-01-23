@@ -9,7 +9,7 @@ In order to communicate with Pachyderm and the database we need to work from a p
 To connect to the pod, use `kubectl exec -it <pod-name> bash`
 
 ### Creating and populate database
-If a new database is desired, follow helm chart instructions and create a mysql server.
+By following [this helm chart](https://github.com/helm/charts/tree/master/stable/mysql)'s instructions, it should be relatively quick to deploy a mysql server pod within the cluster. Depending on one's scenario, it may be necessary to enter custom flags' values different than the default ones available in the related `values.yaml` file. In this specific case, installing the helm chart with default values is more than enough since the underlying k8s cluster supports dynamic provisioning for persistent storages. Only exceptions might be to double-check `resource.request` and `resource.limits` for the mysql pod.
 
 ### Managing secrets
 create or reuse
