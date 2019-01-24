@@ -3,7 +3,7 @@
     "name": "LogD-training"
   },
   "transform": {
-    "image": "snapple49/cpsign-docker:c0.6.16",
+    "image": "pharmbio/cpsign-docker:c0.6.16",
     "cmd": [ "/bin/bash" ],
     "stdin": [
       "mkdir -p /pfs/out/logs",
