@@ -23,10 +23,6 @@
 --model-type
 {{ data['cpsign']['model-type'] }}{% endif %}
 
-{%- if 'trainfile' in data['cpsign'] %}
---trainfile
-{{ data['cpsign']['trainfile'] }}{% endif %}
-
 {%- if 'proper-trainfile' in data['cpsign'] %}
 --proper-trainfile
 {{ data['cpsign']['proper-trainfile'] }}{% endif %}
@@ -42,10 +38,6 @@
 {%- if 'cptype' in data['cpsign'] %}
 --cptype
 {{ data['cpsign']['cptype'] }}{% endif %}
-
-{%- if 'train-data' in data['cpsign'] %}
---train-data
-{{ data['cpsign']['train-data'] }}{% endif %}
 
 {%- if 'model-data' in data['cpsign'] %}
 --model-data
