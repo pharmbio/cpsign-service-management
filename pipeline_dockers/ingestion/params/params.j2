@@ -1,9 +1,5 @@
 {%- if 'short' in data['cpsign'] %}--short{% endif %}
 
-{%- if 'logfile' in data['cpsign'] %}
---logfile
-{{ data['cpsign']['logfile'] }}{% endif %}
-
 {%- if 'silent' in data['cpsign'] %}
 --silent{% endif %}
 
