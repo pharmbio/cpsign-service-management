@@ -1,7 +1,7 @@
-### WORKFLOW: 
-# get data from chembl database
+# get data from database
 # format data to CPSign-compatible format
-# add data to pachyderm repo
+# generate CPSign parameter file
+# move data and params to output repo
 import pymysql
 from jinja2 import FileSystemLoader, Environment
 from json import load
@@ -15,17 +15,16 @@ except FileNotFoundError:
     print("Config file does not exist, this probably won't work...")
     #TODO: create exit mechanism that functions from pachyderm worker and stores logs/stderr
 
-DB_PASSWORD = configuration.get("DB_PASSWORD", None) #NOTE: should not be provided plain in json...
 DB_USERNAME = configuration["database"]["user"]
 DB_HOSTNAME = configuration["database"]["host"]
 DB_DATABASE = configuration["database"]["db_name"]
 
-if not DB_PASSWORD:
-    try:
-        with open("/etc/creds/mysql-root-password", "r") as pwfile:
-            DB_PASSWORD = pwfile.readline()
-    except FileNotFoundError:
-        pass
+DB_PASSWORD = None
+try:
+    with open("/etc/creds/mysql-root-password", "r") as pwfile:
+        DB_PASSWORD = pwfile.readline()
+except FileNotFoundError:
+    pass
 
 data_limit = configuration["query"]["query_limit"]
 data_query = configuration["query"]["database_query"].format(" limit {}".format(data_limit) if data_limit else "")
@@ -55,19 +54,20 @@ if result:
         output.flush()
 
 # Generate params template with jinja2
-# TODO: jinja generate params.txt and populate with training data file name
 file_loader = FileSystemLoader('./params/')
 env = Environment(loader=file_loader)
 template = env.get_template("params.j2")
 param_file_content = template.render(data=configuration)
 
-# TODO: parameterize cpsign version parameters
-param_additional_lines = ["\n", "--trainfile\n/pfs/{}-ingestion/data/{}\n".format(configuration["workflow_name"], smi_file_name)]
+# NOTE: appending flags here as they are important for internal infrastructure in pachyderm pipeline stages and not really relevant for user
+training_data_parameter = "trainfile" if configuration["cpsign-version"] == "0.6.16" else "train-data"
+param_additional_lines = ["\n", "--{}\n/pfs/{}-ingestion/data/{}\n".format(training_data_parameter, configuration["workflow_name"], smi_file_name),
+                          "--model-out\n/pfs/out/models/{}_model.jar".format(configuration["workflow_name"]),
+                          "--logfile\n/pfs/out/logs/{}_logfile.log".format(configuration["workflow_name"])]
 for line in param_additional_lines:
     param_file_content += line
 
 # Add file to PFS
-# TODO: rewrite to use pfs out as pipeline repo, 
 makedirs("/pfs/out/input")
 with open("/pfs/out/input/params.txt", "w") as param_file:
     param_file.write(param_file_content)
