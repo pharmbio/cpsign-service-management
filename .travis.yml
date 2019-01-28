@@ -1,0 +1,46 @@
+---
+sudo: 'required'
+
+services:
+  - docker
+
+before_install:
+  # CHECK CODE QUALITY
+  # Installing code review tools
+  - sudo pip install -qq --upgrade pip
+  - sudo pip install -qq yamllint
+  - sudo apt-get install -qq shellcheck -y
+
+  # Check Shell scripts
+  - shellcheck $(find . -type f -name "*.sh")
+  - docker run -v "$(pwd)":/sh -w /sh jamesmstone/shfmt -i 2 -w bin/*.sh
+  - git diff --exit-code
+
+  # Check Json
+  - echo "$(python -mjson.tool < pipeline_setup/spec-ingestion.json)" > spec-ingestion.json
+  - echo "$(python -mjson.tool < pipeline_setup/spec-train.json)" > spec-train.json
+  - echo "$(python -mjson.tool < pipeline_setup/spec-upload.json)" > spec-upload.json
+  - git diff --exit-code
+
+  # Check YAML
+  - yamllint -c .yamllint.yml -s manager_pod/manager-pod.yaml .yamllint.yml
+  - yamllint -c .yamllint.yml -s .travis.yml .yamllint.yml
+
+# Build and test the images (if this step fails the whole Travis build is considered a failure).
+script:
+
+  # Build Docker image
+  # Create a docker image tag out of branch-name where / is replaced by -
+  - tag="${TRAVIS_BRANCH/\//-}"
+  - docker build -t pharmbio/cpsign-database-ingestion:$tag pipeline_dockers/ingestion/
+  - docker build -t pharmbio/modelweb-uploader:$tag pipeline_dockers/upload/
+
+  # Test container
+  - docker run pharmbio/cpsign-database-ingestion:$tag python -V
+  - docker run pharmbio/modelweb-uploader:$tag python -V
+
+after_success:
+  # Login and push image
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+  - docker push pharmbio/cpsign-database-ingestion:$tag
+  - docker push pharmbio/modelweb-uploader:$tag
