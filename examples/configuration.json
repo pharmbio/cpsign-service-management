@@ -18,11 +18,9 @@
         "impl": "liblinear",
         "nr-models": 1,
         "cost": 1,
-        "model-out": "/pfs/out/models/logd_chembl_output.jar",
         "model-name": "LogD_10000_6_16",
         "nonconf-measure": "normalized",
-        "epsilon": 0.0001,
-        "logfile": "/pfs/out/logs/logfile.log"
+        "epsilon": 0.0001
     }
 
 }

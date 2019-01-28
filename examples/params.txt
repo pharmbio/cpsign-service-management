@@ -8,14 +8,10 @@ liblinear
 1
 --cost
 1
---model-out
-/pfs/out/models/logd_chembl_output.jar
 --model-name
 LogD
 --nonconf-measure
 normalized
 --epsilon
 0.0001
---logfile
-/pfs/out/logs/logfile.log
 --echo
