@@ -1,33 +1,35 @@
 {
-    "pipeline": {
-      "name": "LogD-ingestion"
-    },
-    "transform": {
-      "image": "pharmbio/cpsign-database-ingestion:cps-0.6.16",
-      "cmd": [ "/bin/bash" ],
-      "stdin": [
-        "python3 data_ingestion.py"
-      ],
-      "secrets": [
-        {
-          "name": "logd-chembl-mysql",
-          "mount_path": "/etc/creds/"
+    "input": {
+        "atom": {
+            "glob": "/",
+            "repo": "config"
         }
-      ]
     },
-    "standby": true,
+    "pipeline": {
+        "name": "LogD-ingestion"
+    },
     "resource_limits": {
-      "memory": "4G",
-      "cpu": 2
+        "cpu": 2,
+        "memory": "4G"
     },
     "resource_requests": {
-        "memory" : "2G",
-        "cpu": 1
+        "cpu": 1,
+        "memory": "2G"
     },
-    "input" : {
-      "atom": {
-        "repo": "config",
-        "glob": "/"
-      }
+    "standby": true,
+    "transform": {
+        "cmd": [
+            "/bin/bash"
+        ],
+        "image": "pharmbio/cpsign-database-ingestion:cps-0.6.16",
+        "secrets": [
+            {
+                "mount_path": "/etc/creds/",
+                "name": "logd-chembl-mysql"
+            }
+        ],
+        "stdin": [
+            "python3 data_ingestion.py"
+        ]
     }
-  }
+}
