@@ -2,6 +2,8 @@
 notifications:
   email: false
 
+language: python
+
 sudo: 'required'
 
 services:
@@ -34,13 +36,13 @@ script:
 
   # Build Docker image
   # Create a docker image tag out of branch-name where / is replaced by -
-  - tag="${TRAVIS_BRANCH/\//-}"
+  - tag="v-$(git describe --tags --always | tr -d .)"
   - docker build -t pharmbio/cpsign-database-ingestion:$tag pipeline_dockers/ingestion/
   - docker build -t pharmbio/modelweb-uploader:$tag pipeline_dockers/upload/
 
   # Test container
   - docker run pharmbio/cpsign-database-ingestion:$tag python -V
-  - docker run pharmbio/modelweb-uploader:$tag python -V
+  - docker run pharmbio/modelweb-uploader:$tag curl -V
 
 after_success:
   # Login and push image
