@@ -18,7 +18,7 @@ before_install:
 
   # Check Shell scripts
   - shellcheck $(find . -type f -name "*.sh")
-  # - docker run -v "$(pwd)":/sh -w /sh jamesmstone/shfmt -i 2 -w bin/*.sh
+  - docker run -v "$(pwd)":/sh -w /sh jamesmstone/shfmt -i 2 -w bin/*.sh
   - git diff --exit-code
 
   # Check Json
@@ -31,12 +31,16 @@ before_install:
   - yamllint -c .yamllint.yml -s manager_pod/manager-pod.yaml .yamllint.yml
   - yamllint -c .yamllint.yml -s .travis.yml .yamllint.yml
 
+before_script:
+  # Check current version for tagging docker images
+  source ./bin/get_current_version.sh
+
 # Build and test the images (if this step fails the whole Travis build is considered a failure).
 script:
 
   # Build Docker image
   # Create a docker image tag out of branch-name where / is replaced by -
-  - tag="v-$(git describe --tags --always | tr -d .)"
+  - tag="$CURRENT_VERSION"
   - docker build -t pharmbio/cpsign-database-ingestion:$tag pipeline_dockers/ingestion/
   - docker build -t pharmbio/modelweb-uploader:$tag pipeline_dockers/upload/
 
