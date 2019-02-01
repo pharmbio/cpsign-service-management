@@ -35,7 +35,7 @@ sql_connection = pymysql.Connect(host=DB_HOSTNAME, user=DB_USERNAME, password=DB
 
 try:
     with sql_connection.cursor() as cursor:
-        cursor.execute(data_query)    
+        cursor.execute(data_query)
         result = cursor.fetchall()
 finally:
     sql_connection.close()
