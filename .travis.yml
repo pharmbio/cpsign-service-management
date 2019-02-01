@@ -43,13 +43,16 @@ script:
   - tag="$CURRENT_VERSION"
   - docker build -t pharmbio/cpsign-database-ingestion:$tag pipeline_dockers/ingestion/
   - docker build -t pharmbio/modelweb-uploader:$tag pipeline_dockers/upload/
+  - docker build --build-arg pachctl_version=$PACHCTL_VERSION -t pharmbio/manager-pod:$tag . 
 
   # Test container
   - docker run pharmbio/cpsign-database-ingestion:$tag python -V
   - docker run pharmbio/modelweb-uploader:$tag curl -V
+  - docker run pharmbio/manager-pod:$tag mysql -V
 
 after_success:
   # Login and push image
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
   - docker push pharmbio/cpsign-database-ingestion:$tag
   - docker push pharmbio/modelweb-uploader:$tag
+  - docker push pharmbio/manager-pod:$tag
