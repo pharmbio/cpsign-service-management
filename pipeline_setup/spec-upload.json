@@ -1,33 +1,35 @@
 {
-    "pipeline": {
-      "name": "LogD-upload"
-    },
-    "transform": {
-      "image": "pharmbio/modelweb-uploader:stable-1",
-      "cmd": [ "/bin/sh" ],
-      "stdin": [
-        "/home/upload_model.sh $(cat /mnt/api-info/modelweb-url) $(cat /mnt/api-info/keycloak-url) LogD /pfs/LogD-training/models/ > /pfs/out/log.txt"
-      ],
-      "secrets": [
-        {
-          "name": "modelweb-api-info",
-          "mount_path": "/mnt/api-info/"
+    "input": {
+        "atom": {
+            "glob": "/",
+            "repo": "LogD-training"
         }
-      ]
     },
-    "standby": true,
+    "pipeline": {
+        "name": "LogD-upload"
+    },
     "resource_limits": {
-      "memory": "1G",
-      "cpu": 1.0
+        "cpu": 1.0,
+        "memory": "1G"
     },
     "resource_requests": {
-        "memory" : "512Mi",
-        "cpu": 0.5
+        "cpu": 0.5,
+        "memory": "512Mi"
     },
-    "input" : {
-      "atom": {
-        "repo": "LogD-training",
-        "glob": "/"
-      }
+    "standby": true,
+    "transform": {
+        "cmd": [
+            "/bin/sh"
+        ],
+        "image": "pharmbio/modelweb-uploader:stable-1",
+        "secrets": [
+            {
+                "mount_path": "/mnt/api-info/",
+                "name": "modelweb-api-info"
+            }
+        ],
+        "stdin": [
+            "/home/upload_model.sh $(cat /mnt/api-info/modelweb-url) $(cat /mnt/api-info/keycloak-url) LogD /pfs/LogD-training/models/ > /pfs/out/log.txt"
+        ]
     }
-  }
+}
