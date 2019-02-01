@@ -43,7 +43,7 @@ script:
   - tag="$CURRENT_VERSION"
   - docker build -t pharmbio/cpsign-database-ingestion:$tag pipeline_dockers/ingestion/
   - docker build -t pharmbio/modelweb-uploader:$tag pipeline_dockers/upload/
-  - docker build --build-arg pachctl_version=$PACHCTL_VERSION -t pharmbio/manager-pod:$tag . 
+  - docker build --build-arg pachctl_version=$PACHCTL_VERSION -t pharmbio/manager-pod:$tag .
 
   # Test container
   - docker run pharmbio/cpsign-database-ingestion:$tag python -V
