@@ -1,9 +1,9 @@
 {
-    "workflow_name" : "",
+    "workflow_name" : "hERG",
     "database" : {
-        "host" : "",
-        "user" : "",
-        "db_name" : ""
+        "host" : "chembl-mysql",
+        "user" : "root",
+        "db_name" : "chembl_24"
     },
 
     "query" : {
