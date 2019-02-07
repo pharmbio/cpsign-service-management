@@ -12,8 +12,8 @@ RUN apt update && apt install -y --no-install-recommends nano mysql-client apt-t
 
 ADD examples/params.txt /home/example
 ADD README.md /home/
-ADD pipeline_dockers /home/pipeline_dockers
-ADD pipeline_setup /home/pipeline_setup
+ADD LogD /home/LogD
 ADD configuration.json /home/configuration.json
 
 WORKDIR /home
+
