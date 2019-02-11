@@ -61,13 +61,13 @@ param_file_content = template.render(data=configuration)
 
 # NOTE: appending flags here as they are important for internal infrastructure in pachyderm pipeline stages and not really relevant for user
 training_data_parameter = "trainfile" if configuration["cpsign-version"] == "0.6.16" else "train-data"
-param_additional_lines = ["\n", "--{}\n/pfs/{}-ingestion/data/{}\n".format(training_data_parameter, configuration["workflow_name"], smi_file_name),
-                          "--model-out\n/pfs/out/models/{}_model.jar".format(configuration["workflow_name"]),
-                          "--logfile\n/pfs/out/logs/{}_logfile.log".format(configuration["workflow_name"])]
+param_additional_lines = ["\n--{}\n/pfs/{}-ingestion/data/{}".format(training_data_parameter, configuration["workflow_name"], smi_file_name),
+                          "\n--model-out\n/pfs/out/models/{}_model.jar".format(configuration["workflow_name"]),
+                          "\n--logfile\n/pfs/out/logs/{}_logfile.log".format(configuration["workflow_name"])]
 for line in param_additional_lines:
     param_file_content += line
 
 # Add file to PFS
-makedirs("/pfs/out/input")
+makedirs("/pfs/out/input", exist_ok=True)
 with open("/pfs/out/input/params.txt", "w") as param_file:
     param_file.write(param_file_content)
