@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$1" = "-h" ]; then
  echo "Usage: $0 <modelingweb url> <keycloak url> <category> <model folder>"
