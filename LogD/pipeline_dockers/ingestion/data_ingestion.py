@@ -6,7 +6,8 @@ import pymysql
 from jinja2 import FileSystemLoader, Environment
 from json import load
 from os import environ, makedirs
-
+from time import time
+from math import ceil
 configuration = None
 try:
     with open("/pfs/config/configuration.json", "r") as config_file:
@@ -59,15 +60,70 @@ env = Environment(loader=file_loader)
 template = env.get_template("params.j2")
 param_file_content = template.render(data=configuration)
 
-# NOTE: appending flags here as they are important for internal infrastructure in pachyderm pipeline stages and not really relevant for user
-training_data_parameter = "trainfile" if configuration["cpsign-version"] == "0.6.16" else "train-data"
-param_additional_lines = ["\n--{}\n/pfs/{}-ingestion/data/{}".format(training_data_parameter, configuration["workflow_name"], smi_file_name),
-                          "\n--model-out\n/pfs/out/models/{}_model.jar".format(configuration["workflow_name"]),
-                          "\n--logfile\n/pfs/out/logs/{}_logfile.log".format(configuration["workflow_name"])]
-for line in param_additional_lines:
-    param_file_content += line
+# CPSign version differences etc...
+if configuration["cpsign-version"] == "0.6.16":
+    training_data_parameter = "trainfile"
+    problem_type_parameter = 'cptype'
+else:
+    training_data_parameter = "train-data"
+    problem_type_parameter = 'ptype'
 
-# Add file to PFS
-makedirs("/pfs/out/input", exist_ok=True)
-with open("/pfs/out/input/params.txt", "w") as param_file:
-    param_file.write(param_file_content)
+parallellism = configuration.get("parallellism", False)
+if not parallellism:
+    # NOTE: appending flags here as they are important for internal infrastructure in pachyderm pipeline stages and not really relevant for user
+    param_additional_lines = [
+        "\n--{}\n/pfs/{}-ingestion/data/{}".format(training_data_parameter, configuration["workflow_name"], smi_file_name),
+        "\n--model-out\n/pfs/out/models/{}_model.jar".format(configuration["workflow_name"]),
+        "\n--logfile\n/pfs/out/logs/{}_logfile.log".format(configuration["workflow_name"]),
+        "\n--nr-models\n1"
+    ]
+    for line in param_additional_lines:
+        param_file_content += line
+
+    # Add file to PFS
+    makedirs("/pfs/out/input", exist_ok=True)
+    with open("/pfs/out/input/params.txt", "w") as param_file:
+        param_file.write(param_file_content)
+
+else:
+    # generate one config per model for train, and additional config for precompute
+    makedirs("/pfs/out/training", exist_ok=True)
+
+    # train parameter files
+    nr_models = configuration["cpsign"]["nr-models"]
+    splits = configuration["parallellism"]["splits_per_model"]
+    num_of_files = ceil(nr_models/splits)
+    for i in range(1, num_of_files+1):
+        train_file_content = template.render(data=configuration)
+        index_current_file = (i-1)*splits+1
+        file_splits = str(list(range(index_current_file, index_current_file+splits))).replace(" ", "")
+        additional_train_params = [
+            "\n--model-in\n/pfs/{}-precompute/precomputed.jar".format(configuration["workflow_name"]),
+            "\n--model-out\n/pfs/out/models/partial_model_{}.jar".format(i),
+            "\n--logfile\n/pfs/out/logs/partial_logfile_{}.log".format(i),
+            "\n--splits\n{}".format(file_splits),
+            "\n--seed\n{}".format(int(time()))
+        ]
+        for line in additional_train_params:
+            train_file_content += line
+
+        # Add file to PFS
+        with open("/pfs/out/training/params_{}.txt".format(i), "w") as train_file:
+            train_file.write(train_file_content)
+
+    # precompute parameter file
+    precompute_file_content = ""
+    precompute_params = [
+        "\n--{}\n/pfs/{}-ingestion/data/{}".format(training_data_parameter, configuration["workflow_name"], smi_file_name),
+        "\n--model-out\n/pfs/out/precomputed.jar",
+        "\n--model-name\n{}-precomputed".format(configuration["workflow_name"]),
+        "\n--logfile\n/pfs/out/precompute_logfile.log",
+        "\n--model-type\n{}".format(configuration["cpsign"][problem_type_parameter])
+    ]
+    for line in precompute_params:
+        precompute_file_content += line
+
+    # Add file to PFS
+    makedirs("/pfs/out/precompute", exist_ok=True)
+    with open("/pfs/out/precompute/params.txt", "w") as precompute_file:
+        precompute_file.write(precompute_file_content)
