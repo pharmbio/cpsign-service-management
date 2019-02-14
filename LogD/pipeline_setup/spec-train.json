@@ -1,22 +1,22 @@
 {
     "input": {
-      "cross": [
-      {
-        "atom": {
-            "glob": "/training/*",
-            "repo": "LogD-ingestion"
-        }
-      },
-      {
-        "atom": {
-            "glob": "/",
-            "repo": "LogD-precompute"
-        }
-      }
-      ]
+        "cross": [
+            {
+                "atom": {
+                    "glob": "/training/*",
+                    "repo": "LogD-ingestion"
+                }
+            },
+            {
+                "atom": {
+                    "glob": "/",
+                    "repo": "LogD-precompute"
+                }
+            }
+        ]
     },
     "parallelism_spec": {
-      "constant": 3
+        "constant": 3
     },
     "pipeline": {
         "name": "LogD-training"
