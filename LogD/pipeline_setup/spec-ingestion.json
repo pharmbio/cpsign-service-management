@@ -16,16 +16,16 @@
         "cpu": 1,
         "memory": "2G"
     },
-    "standby": true,
+    "standby": false,
     "transform": {
         "cmd": [
             "/bin/bash"
         ],
-        "image": "pharmbio/cpsign-database-ingestion:cps-0.6.16",
+        "image": "pharmbio/cpsign-database-ingestion:test-splits-3",
         "secrets": [
             {
                 "mount_path": "/etc/creds/",
-                "name": "logd-chembl-mysql"
+                "name": "chembl-mysql"
             }
         ],
         "stdin": [
