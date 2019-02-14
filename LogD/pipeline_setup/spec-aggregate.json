@@ -1,0 +1,37 @@
+{
+    "input": {
+        "atom": {
+            "glob": "/models",
+            "repo": "LogD-training"
+        }
+    },
+    "pipeline": {
+        "name": "LogD-aggregate"
+    },
+    "resource_limits": {
+        "cpu": 2,
+        "memory": "4G"
+    },
+    "resource_requests": {
+        "cpu": 1,
+        "memory": "2G"
+    },
+    "standby": false,
+    "transform": {
+        "cmd": [
+            "/bin/bash"
+        ],
+        "image": "pharmbio/cpsign-docker:c0.7.7",
+        "secrets": [
+            {
+                "mount_path": "/mnt/lic/",
+                "name": "cpsign-license"
+            }
+        ],
+        "stdin": [
+            "export folder=/pfs/LogD-training",
+            "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.7.7.jar fast-aggregate -m $(for split in $(ls $folder/models); do   echo $folder/models/$split; done) -mo /pfs/out/LogD-aggregated.jar --license /mnt/lic/license  > /pfs/out/stdout.txt"
+        ]
+    }
+}
+

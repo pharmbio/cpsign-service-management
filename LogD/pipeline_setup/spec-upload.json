@@ -16,12 +16,12 @@
         "cpu": 0.5,
         "memory": "512Mi"
     },
-    "standby": true,
+    "standby": false,
     "transform": {
         "cmd": [
-            "/bin/sh"
+            "/bin/bash"
         ],
-        "image": "pharmbio/modelweb-uploader:stable-1",
+        "image": "pharmbio/modelweb-uploader:cheesus",
         "secrets": [
             {
                 "mount_path": "/mnt/api-info/",
