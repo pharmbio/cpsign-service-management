@@ -157,6 +157,10 @@
 --sampling-strategy
 {{ data['cpsign']['sampling-strategy'] }}{% endif %}
 
+{%- if 'nr-models' in data['cpsign'] %}
+--nr-models
+{{ data['cpsign']['nr-models'] }}{% endif %}
+
 {%- if 'calibration-ratio' in data['cpsign'] %}
 --calibration-ratio
 {{ data['cpsign']['calibration-ratio'] }}{% endif %}
