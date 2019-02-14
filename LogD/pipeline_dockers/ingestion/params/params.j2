@@ -35,6 +35,10 @@
 --cptype
 {{ data['cpsign']['cptype'] }}{% endif %}
 
+{%- if 'ptype' in data['cpsign'] %}
+--ptype
+{{ data['cpsign']['ptype'] }}{% endif %}
+
 {%- if 'model-data' in data['cpsign'] %}
 --model-data
 {{ data['cpsign']['model-data'] }}{% endif %}

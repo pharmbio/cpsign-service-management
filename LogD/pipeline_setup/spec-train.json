@@ -1,37 +1,52 @@
 {
     "input": {
-        "atom": {
-            "glob": "/",
-            "repo": "LogD-ingestion"
-        }
+        "cross": [
+            {
+                "atom": {
+                    "glob": "/training/*",
+                    "repo": "LogD-ingestion"
+                }
+            },
+            {
+                "atom": {
+                    "glob": "/",
+                    "repo": "LogD-precompute"
+                }
+            }
+        ]
+    },
+    "parallelism_spec": {
+        "constant": 3
     },
     "pipeline": {
         "name": "LogD-training"
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "16G"
+        "memory": "8G"
     },
     "resource_requests": {
         "cpu": 1,
-        "memory": "8G"
+        "memory": "4G"
     },
-    "standby": true,
+    "standby": false,
     "transform": {
         "cmd": [
             "/bin/bash"
         ],
-        "image": "pharmbio/cpsign-docker:c0.6.16",
+        "image": "pharmbio/cpsign-docker:c0.7.7",
         "secrets": [
             {
                 "mount_path": "/mnt/lic/",
-                "name": "logd-license"
+                "name": "cpsign-license"
             }
         ],
         "stdin": [
             "mkdir -p /pfs/out/logs",
             "touch /pfs/out/logs/stdout.txt",
-            "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.6.16.jar train --license /mnt/lic/license @/pfs/LogD-ingestion/input/params.txt > /pfs/out/logs/stdout.txt"
+            "echo '\n-------------\n' >> /pfs/out/logs/stdout.txt",
+            "export PARAMS_FILE=/pfs/LogD-ingestion/training/$(ls /pfs/LogD-ingestion/training/)",
+            "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.7.7.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
         ]
     }
 }
