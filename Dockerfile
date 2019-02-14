@@ -10,10 +10,9 @@ RUN apt update && apt install -y --no-install-recommends nano mysql-client apt-t
     apt update && apt install -y --no-install-recommends kubectl  && \
     pip3.5 install pymysql jinja2 && rm /tmp/pachctl.deb
 
-ADD examples/params.txt /home/example
+ADD examples/ /home/example
 ADD README.md /home/
 ADD LogD /home/LogD
-ADD configuration.json /home/configuration.json
 
 WORKDIR /home
 
