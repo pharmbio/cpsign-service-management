@@ -10,13 +10,13 @@
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "4G"
+        "memory": "16G"
     },
     "resource_requests": {
         "cpu": 1,
-        "memory": "2G"
+        "memory": "8G"
     },
-    "standby": false,
+    "standby": true,
     "transform": {
         "cmd": [
             "/bin/bash"
@@ -29,8 +29,6 @@
             }
         ],
         "stdin": [
-            "mkdir -p /pfs/out/logs",
-            "touch /pfs/out/logs/stdout.txt",
             "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.7.7.jar precompute --license /mnt/lic/license @/pfs/LogD-ingestion/precompute/params.txt > /pfs/out/stdout.txt"
         ]
     }

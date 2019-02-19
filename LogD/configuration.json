@@ -7,22 +7,22 @@
     },
     "query": {
         "database_query": "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
-        "query_limit": 60000,
+        "query_limit": null,
         "smi_columns": [
             "canonical_smiles, acd_logd"
         ],
         "smi_filename": "chembl_training_data.smi"
     },
     "parallellism": {
-        "splits_per_model": 2
+        "splits_per_model": 3
     },
     "cpsign-version": "0.7.7",
     "cpsign": {
         "ptype": 2,
         "impl": "liblinear",
-        "nr-models": 6,
+        "nr-models": 15,
         "cost": 1,
-        "model-name": "LogD_10000_6_16",
+        "model-name": "LogD_full_split",
         "nonconf-measure": "normalized",
         "epsilon": 0.0001
     }

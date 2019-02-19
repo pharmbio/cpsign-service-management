@@ -16,12 +16,12 @@
         "cpu": 1,
         "memory": "2G"
     },
-    "standby": false,
+    "standby": true,
     "transform": {
         "cmd": [
             "/bin/bash"
         ],
-        "image": "pharmbio/cpsign-database-ingestion:test-splits-3",
+        "image": "pharmbio/cpsign-database-ingestion:vc63ef04-current",
         "secrets": [
             {
                 "mount_path": "/etc/creds/",

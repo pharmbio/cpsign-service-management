@@ -10,13 +10,13 @@
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "4G"
+        "memory": "16G"
     },
     "resource_requests": {
         "cpu": 1,
-        "memory": "2G"
+        "memory": "8G"
     },
-    "standby": false,
+    "standby": true,
     "transform": {
         "cmd": [
             "/bin/bash"
