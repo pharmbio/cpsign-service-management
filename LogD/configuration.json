@@ -14,13 +14,13 @@
         "smi_filename": "chembl_training_data.smi"
     },
     "parallellism": {
-        "splits_per_model": 3
+        "splits_per_model": 1
     },
     "cpsign-version": "0.7.7",
     "cpsign": {
         "ptype": 2,
         "impl": "liblinear",
-        "nr-models": 15,
+        "nr-models": 5,
         "cost": 1,
         "model-name": "LogD_full_split",
         "nonconf-measure": "normalized",

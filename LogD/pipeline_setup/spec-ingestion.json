@@ -10,7 +10,7 @@
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "4G"
+        "memory": "8G"
     },
     "resource_requests": {
         "cpu": 1,

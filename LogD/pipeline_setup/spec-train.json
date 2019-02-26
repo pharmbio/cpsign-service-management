@@ -23,7 +23,7 @@
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "20G"
+        "memory": "24G"
     },
     "resource_requests": {
         "cpu": 1,
@@ -46,7 +46,7 @@
             "touch /pfs/out/logs/stdout.txt",
             "echo '\n-------------\n' >> /pfs/out/logs/stdout.txt",
             "export PARAMS_FILE=/pfs/LogD-ingestion/training/$(ls /pfs/LogD-ingestion/training/)",
-            "java -jar -Xmx16G cpsign-0.7.7.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
+            "java -jar -Xmx20G cpsign-0.7.7.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
         ]
     }
 }
