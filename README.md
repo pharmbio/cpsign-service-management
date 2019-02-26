@@ -2,8 +2,15 @@
 ![workflow_overview](/imgs/cpsign_workflow.png)
 
 ## Initial setup of workflow
+### Configure kubernetes
+In order to interact with your underlying k8s cluster, for instance connecting to a pod, you need to provide your kube `config` file. Copy your kubernetes config file to this location within the pod: `/root/.kube/config`.
+
+**Protip:** `kubectl cp <src> <pod-name>:/root/.kube/config`
+
+**Note:** We are assuming that `kubectl` is installed locally on the machine you are using to access a k8s cluster.
+
 ### Create manager pod
-In order to communicate with Pachyderm and the preferred database, you need to work from a pod within the cluster. Thus first create a pod from the following yaml file: `manager-pod.yaml` with the command `kubectl create -f manager-pod.yaml --namespace=labinf` .
+In order to communicate with Pachyderm and connect to a preferred database (e.g. the ChEMBL database), you need to work from a pod within the cluster. Thus first create a pod from the following yaml file: `manager-pod.yaml` with the command `kubectl create -f manager-pod.yaml --namespace=labinf` .
 
 To connect to the pod, use `kubectl exec -it <pod-name> bash` .
 
@@ -12,11 +19,6 @@ By following [this helm chart](https://github.com/helm/charts/tree/master/stable
 
 ### Managing secrets
 In order to provide various credentials to the Pachyderm workers, it is possible to provide them as kubernetes secrets. This is done in the pipeline specification under the `transform` section, [see here](http://docs.pachyderm.io/en/latest/reference/pipeline_spec.html#transform-required). Credentials common to most services can be shared, like the CPSign license or Modelingweb Keycloak credentials, and don't require creating new secrets.
-
-### Configure kubernetes (optional)
-If desired, the manager pod comes with `kubectl`installed, but you need to provide your kube `config` file. Copy your kubernetes config file to this location within the pod: `/root/.kube/config`.
-
-**Protip:** `kubectl cp <src> <pod-name>:/root/.kube/config`
 
 ### Connecting workspace to pachd
 To communicate with Pachyderm via its command-line tool `pachctl`, one needs to either set the environment variable `ADDRESS` equal to the IP of the `pachd` service (i.e. `export ADDRESS=<pachd IP>`), or to execute the `pachctl`'s built-in `port-forward` command like so: `pachctl port-forward --namespace=<desired namespace> &`. Every time one connects to the pod this is required.

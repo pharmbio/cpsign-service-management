@@ -1,0 +1,29 @@
+{
+    "workflow_name": "",
+    "database": {
+        "host": "",
+        "user": "",
+        "db_name": ""
+    },
+    "query": {
+        "database_query": "",
+        "query_limit": 0,
+        "smi_columns": [
+            ""
+        ],
+        "smi_filename": ""
+    },
+    "parallellism": {
+        "splits_per_model": 0
+    },
+    "cpsign-version": "",
+    "cpsign": {
+        "ptype": 0,
+        "impl": "",
+        "nr-models": 0,
+        "cost": 0,
+        "model-name": "",
+        "nonconf-measure": "",
+        "epsilon": 0
+    }
+}

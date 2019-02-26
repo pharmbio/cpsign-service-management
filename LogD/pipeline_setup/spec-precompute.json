@@ -1,0 +1,35 @@
+{
+    "input": {
+        "atom": {
+            "glob": "/",
+            "repo": "LogD-ingestion"
+        }
+    },
+    "pipeline": {
+        "name": "LogD-precompute"
+    },
+    "resource_limits": {
+        "cpu": 4,
+        "memory": "24G"
+    },
+    "resource_requests": {
+        "cpu": 2,
+        "memory": "12G"
+    },
+    "standby": true,
+    "transform": {
+        "cmd": [
+            "/bin/bash"
+        ],
+        "image": "pharmbio/cpsign-docker:c0.7.7",
+        "secrets": [
+            {
+                "mount_path": "/mnt/lic/",
+                "name": "cpsign-license"
+            }
+        ],
+        "stdin": [
+            "java -jar -Xmx20G cpsign-0.7.7.jar precompute --license /mnt/lic/license @/pfs/LogD-ingestion/precompute/params.txt > /pfs/out/stdout.txt"
+        ]
+    }
+}

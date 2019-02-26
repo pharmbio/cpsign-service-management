@@ -22,9 +22,9 @@ before_install:
   - git diff --exit-code
 
   # Check Json
-  - echo "$(python -mjson.tool < pipeline_setup/spec-ingestion.json)" > spec-ingestion.json
-  - echo "$(python -mjson.tool < pipeline_setup/spec-train.json)" > spec-train.json
-  - echo "$(python -mjson.tool < pipeline_setup/spec-upload.json)" > spec-upload.json
+  - echo "$(python -mjson.tool < LogD/pipeline_setup/spec-ingestion.json)" > LogD/pipeline_setup/spec-ingestion.json
+  - echo "$(python -mjson.tool < LogD/pipeline_setup/spec-train.json)" > LogD/pipeline_setup/spec-train.json
+  - echo "$(python -mjson.tool < LogD/pipeline_setup/spec-upload.json)" > LogD/pipeline_setup/spec-upload.json
   - git diff --exit-code
 
   # Check YAML
@@ -41,8 +41,8 @@ script:
   # Build Docker image
   # Create a docker image tag out of branch-name where / is replaced by -
   - tag="$CURRENT_VERSION"
-  - docker build -t pharmbio/cpsign-database-ingestion:$tag pipeline_dockers/ingestion/
-  - docker build -t pharmbio/modelweb-uploader:$tag pipeline_dockers/upload/
+  - docker build -t pharmbio/cpsign-database-ingestion:$tag LogD/pipeline_dockers/ingestion/
+  - docker build -t pharmbio/modelweb-uploader:$tag LogD/pipeline_dockers/upload/
   - docker build --build-arg pachctl_version=$PACHCTL_VERSION -t pharmbio/manager-pod:pctl-$PACHCTL_VERSION .
 
   # Test container
