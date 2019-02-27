@@ -1,0 +1,35 @@
+{
+    "input": {
+        "atom": {
+            "glob": "/",
+            "repo": "config"
+        }
+    },
+    "pipeline": {
+        "name": "LogD-ingestion"
+    },
+    "resource_limits": {
+        "cpu": 2,
+        "memory": "8G"
+    },
+    "resource_requests": {
+        "cpu": 1,
+        "memory": "2G"
+    },
+    "standby": true,
+    "transform": {
+        "cmd": [
+            "/bin/bash"
+        ],
+        "image": "pharmbio/cpsign-database-ingestion:vc63ef04-current",
+        "secrets": [
+            {
+                "mount_path": "/etc/creds/",
+                "name": "chembl-mysql"
+            }
+        ],
+        "stdin": [
+            "python3 data_ingestion.py"
+        ]
+    }
+}
