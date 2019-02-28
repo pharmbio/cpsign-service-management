@@ -16,20 +16,20 @@
         ]
     },
     "parallelism_spec": {
-        "constant": 3
+        "constant": 5
     },
     "pipeline": {
         "name": "LogD-training"
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "8G"
+        "memory": "24G"
     },
     "resource_requests": {
         "cpu": 1,
-        "memory": "4G"
+        "memory": "12G"
     },
-    "standby": false,
+    "standby": true,
     "transform": {
         "cmd": [
             "/bin/bash"
@@ -46,7 +46,7 @@
             "touch /pfs/out/logs/stdout.txt",
             "echo '\n-------------\n' >> /pfs/out/logs/stdout.txt",
             "export PARAMS_FILE=/pfs/LogD-ingestion/training/$(ls /pfs/LogD-ingestion/training/)",
-            "java -jar -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap cpsign-0.7.7.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
+            "java -jar -Xmx20G cpsign-0.7.7.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
         ]
     }
 }
