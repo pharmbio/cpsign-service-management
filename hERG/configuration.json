@@ -6,12 +6,12 @@
         "db_name": "chembl_24"
     },
     "query": {
-        "database_query": "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
+        "database_query": "SELECT DISTINCT t.pref_name, cs.canonical_smiles, ac.standard_type, ac.standard_value, ac.standard_units, a.confidence_score FROM compound_structures cs, activities ac, assays a, target_dictionary t WHERE cs.molregno = ac.molregno AND ac.assay_id = a.assay_id AND a.assay_type = 'B' AND ac.standard_relation = '=' AND a.tid = t.tid AND t.target_type = 'SINGLE PROTEIN' AND ( (ac.standard_type = 'IC50' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'Ki' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'EC50' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'Log Ki' AND ac.standard_units IS NULL) OR (ac.standard_type = 'Kd' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'Log IC50' AND ac.standard_units IS NULL) ) AND t.organism = 'Homo sapiens' AND t.pref_name = 'HERG';",
         "query_limit": null,
         "smi_columns": [
-            "canonical_smiles, acd_logd"
+            "pref_name", "canonical_smiles", "standard_type", "standard_value", "standard_units", "confidence_score"
         ],
-        "smi_filename": "chembl_training_data.smi"
+        "smi_filename": "chembl_training_data"
     },
     "parallellism": {
         "splits_per_model": 1
@@ -20,9 +20,9 @@
     "cpsign": {
         "ptype": 2,
         "impl": "liblinear",
-        "nr-models": 5,
+        "nr-models": 1,
         "cost": 1,
-        "model-name": "LogD_full_split",
+        "model-name": "hERG_testing",
         "nonconf-measure": "normalized",
         "epsilon": 0.0001
     }
