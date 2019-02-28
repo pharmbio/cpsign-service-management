@@ -12,7 +12,7 @@ from decimal import Decimal
 
 configuration = None
 try:
-    with open("/pfs/config/configuration.json", "r") as config_file:
+    with open("/pfs/hERG_config/configuration.json", "r") as config_file:
         configuration = load(config_file)
 except FileNotFoundError:
     print("Config file does not exist, this probably won't work...")
@@ -44,7 +44,7 @@ finally:
     sql_connection.close()
 
 # Reformat data
-header = "".join([value+"\t" for value in configuration["query"]["smi_columns"]]) + "\n"
+header = "".join([value+"\t" for value in configuration["query"]["smi_columns"]])[:-1] + "\n"
 lines = [header]
 for row in result:
     line = "".join(["{}\t".format(value if not isinstance(value, Decimal) else value.to_eng_string()) for value in row])[:-1] + "\n"
@@ -61,6 +61,7 @@ if result:
 with open("/pfs/out/data/{}.csv".format(smi_file_name),'r') as f:
     df = pd.read_csv(f, sep='\t')
     D={}
+    print(df)
     num_lines = len(df.axes[0])
     for i in range(0, num_lines-2):
         df.iloc[i, 0] = df.iloc[i, 0].replace('/','-')
@@ -88,7 +89,7 @@ with open("/pfs/out/data/{}.csv".format(smi_file_name),'r') as f:
             elif df.iloc[j,2]=='EC50' and df.iloc[j,3]<=10000:
                 D.setdefault(df.iloc[j,0],[]).append('1\n')
     for key,value in D.items():
-        with open(key + '.json', 'w+') as f:
+        with open("/pfs/out/data/" + smi_file_name + '.smi', 'w+') as f:
             f.write(''.join(value))
 
 

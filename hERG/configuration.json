@@ -18,7 +18,7 @@
     },
     "cpsign-version": "0.7.7",
     "cpsign": {
-        "ptype": 2,
+        "ptype": 1,
         "impl": "liblinear",
         "nr-models": 5,
         "cost": 1,
