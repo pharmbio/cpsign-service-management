@@ -1,316 +1,316 @@
-{%- if 'short' in data['cpsign'] %}--short{% endif %}
+{%- if 'short' in data %}--short{% endif %}
 
-{%- if 'silent' in data['cpsign'] %}
+{%- if 'silent' in data %}
 --silent{% endif %}
 
-{%- if 'progress-bar' in data['cpsign'] %}
+{%- if 'progress-bar' in data %}
 --progress-bar{% endif %}
 
-{%- if 'progress-bar-ascii' in data['cpsign'] %}
+{%- if 'progress-bar-ascii' in data %}
 --progress-bar-ascii{% endif %}
 
-{%- if 'time' in data['cpsign'] %}
+{%- if 'time' in data %}
 --time{% endif %}
 
-{%- if 'echo' in data['cpsign'] %}
+{%- if 'echo' in data %}
 --echo{% endif %}
 
-{%- if 'model-type' in data['cpsign'] %}
+{%- if 'model-type' in data %}
 --model-type
-{{ data['cpsign']['model-type'] }}{% endif %}
+{{ data['model-type'] }}{% endif %}
 
-{%- if 'proper-trainfile' in data['cpsign'] %}
+{%- if 'proper-trainfile' in data %}
 --proper-trainfile
-{{ data['cpsign']['proper-trainfile'] }}{% endif %}
+{{ data['proper-trainfile'] }}{% endif %}
 
-{%- if 'calibration-trainfile' in data['cpsign'] %}
+{%- if 'calibration-trainfile' in data %}
 --calibration-trainfile
-{{ data['cpsign']['calibration-trainfile'] }}{% endif %}
+{{ data['calibration-trainfile'] }}{% endif %}
 
-{%- if 'response-name' in data['cpsign'] %}
+{%- if 'response-name' in data %}
 --response-name
-{{ data['cpsign']['response-name'] }}{% endif %}
+{{ data['response-name'] }}{% endif %}
 
-{%- if 'cptype' in data['cpsign'] %}
+{%- if 'cptype' in data %}
 --cptype
-{{ data['cpsign']['cptype'] }}{% endif %}
+{{ data['cptype'] }}{% endif %}
 
-{%- if 'ptype' in data['cpsign'] %}
+{%- if 'ptype' in data %}
 --ptype
-{{ data['cpsign']['ptype'] }}{% endif %}
+{{ data['ptype'] }}{% endif %}
 
-{%- if 'model-data' in data['cpsign'] %}
+{%- if 'model-data' in data %}
 --model-data
-{{ data['cpsign']['model-data'] }}{% endif %}
+{{ data['model-data'] }}{% endif %}
 
-{%- if 'model-in' in data['cpsign'] %}
+{%- if 'model-in' in data %}
 --model-in
-{{ data['cpsign']['model-in'] }}{% endif %}
+{{ data['model-in'] }}{% endif %}
 
-{%- if 'predictfile' in data['cpsign'] %}
+{%- if 'predictfile' in data %}
 --predictfile
-{{ data['cpsign']['predictfile'] }}{% endif %}
+{{ data['predictfile'] }}{% endif %}
 
-{%- if 'predict-file' in data['cpsign'] %}
+{%- if 'predict-file' in data %}
 --predict-file
-{{ data['cpsign']['predict-file'] }}{% endif %}
+{{ data['predict-file'] }}{% endif %}
 
-{%- if 'validation-property' in data['cpsign'] %}
+{%- if 'validation-property' in data %}
 --validation-property
-{{ data['cpsign']['validation-property'] }}{% endif %}
+{{ data['validation-property'] }}{% endif %}
 
-{%- if 'smiles' in data['cpsign'] %}
+{%- if 'smiles' in data %}
 --smiles
-{{ data['cpsign']['smiles'] }}{% endif %}
+{{ data['smiles'] }}{% endif %}
 
-{%- if 'modelfiles' in data['cpsign'] %}
+{%- if 'modelfiles' in data %}
 --modelfiles
-{{ data['cpsign']['modelfiles'] }}{% endif %}
+{{ data['modelfiles'] }}{% endif %}
 
-{%- if 'accept-fail' in data['cpsign'] %}
+{%- if 'accept-fail' in data %}
 --accept-fail{% endif %}
 
-{%- if 'calibration-data' in data['cpsign'] %}
+{%- if 'calibration-data' in data %}
 --calibration-data
-{{ data['cpsign']['calibration-data'] }}{% endif %}
+{{ data['calibration-data'] }}{% endif %}
 
-{%- if 'endpoint' in data['cpsign'] %}
+{%- if 'endpoint' in data %}
 --endpoint
-{{ data['cpsign']['endpoint'] }}{% endif %}
+{{ data['endpoint'] }}{% endif %}
 
-{%- if 'validation-endpoint' in data['cpsign'] %}
+{%- if 'validation-endpoint' in data %}
 --validation-endpoint
-{{ data['cpsign']['validation-endpoint'] }}{% endif %}
+{{ data['validation-endpoint'] }}{% endif %}
 
-{%- if 'labels' in data['cpsign'] %}
+{%- if 'labels' in data %}
 --labels
-{{ data['cpsign']['labels'] }}{% endif %}
+{{ data['labels'] }}{% endif %}
 
-{%- if 'height-start' in data['cpsign'] %}
+{%- if 'height-start' in data %}
 --height-start
-{{ data['cpsign']['height-start'] }}{% endif %}
+{{ data['height-start'] }}{% endif %}
 
-{%- if 'height-end' in data['cpsign'] %}
+{%- if 'height-end' in data %}
 --height-end
-{{ data['cpsign']['height-end'] }}{% endif %}
+{{ data['height-end'] }}{% endif %}
 
-{%- if 'signatures-generator' in data['cpsign'] %}
+{%- if 'signatures-generator' in data %}
 --signatures-generator
-{{ data['cpsign']['signatures-generator'] }}{% endif %}
+{{ data['signatures-generator'] }}{% endif %}
 
-{%- if 'model-out' in data['cpsign'] %}
+{%- if 'model-out' in data %}
 --model-out
-{{ data['cpsign']['model-out'] }}{% endif %}
+{{ data['model-out'] }}{% endif %}
 
-{%- if 'model-out-dir' in data['cpsign'] %}
+{%- if 'model-out-dir' in data %}
 --model-out-dir
-{{ data['cpsign']['model-out-dir'] }}{% endif %}
+{{ data['model-out-dir'] }}{% endif %}
 
-{%- if 'model-name' in data['cpsign'] %}
+{%- if 'model-name' in data %}
 --model-name
-{{ data['cpsign']['model-name'] }}{% endif %}
+{{ data['model-name'] }}{% endif %}
 
-{%- if 'model-category' in data['cpsign'] %}
+{%- if 'model-category' in data %}
 --model-category
-{{ data['cpsign']['model-category'] }}{% endif %}
+{{ data['model-category'] }}{% endif %}
 
-{%- if 'model-version' in data['cpsign'] %}
+{%- if 'model-version' in data %}
 --model-version
-{{ data['cpsign']['model-version'] }}{% endif %}
+{{ data['model-version'] }}{% endif %}
 
-{%- if 'result-format' in data['cpsign'] %}
+{%- if 'result-format' in data %}
 --result-format
-{{ data['cpsign']['result-format'] }}{% endif %}
+{{ data['result-format'] }}{% endif %}
 
-{%- if 'output' in data['cpsign'] %}
+{%- if 'output' in data %}
 --output
-{{ data['cpsign']['output'] }}{% endif %}
+{{ data['output'] }}{% endif %}
 
-{%- if 'output-format' in data['cpsign'] %}
+{%- if 'output-format' in data %}
 --output-format
-{{ data['cpsign']['output-format'] }}{% endif %}
+{{ data['output-format'] }}{% endif %}
 
-{%- if 'output-inchi' in data['cpsign'] %}
+{%- if 'output-inchi' in data %}
 --output-inchi
-{{ data['cpsign']['output-inchi'] }}{% endif %}
+{{ data['output-inchi'] }}{% endif %}
 
-{%- if 'compress' in data['cpsign'] %}
+{%- if 'compress' in data %}
 --compress
-{{ data['cpsign']['compress'] }}{% endif %}
+{{ data['compress'] }}{% endif %}
 
-{%- if 'roc' in data['cpsign'] %}
+{%- if 'roc' in data %}
 --roc{% endif %}
 
-{%- if 'encrypt' in data['cpsign'] %}
+{%- if 'encrypt' in data %}
 --encrypt
-{{ data['cpsign']['encrypt'] }}{% endif %}
+{{ data['encrypt'] }}{% endif %}
 
-{%- if 'two-factor-pin' in data['cpsign'] %}
+{%- if 'two-factor-pin' in data %}
 --two-factor-pin
-{{ data['cpsign']['two-factor-pin'] }}{% endif %}
+{{ data['two-factor-pin'] }}{% endif %}
 
-{%- if 'predictor-type' in data['cpsign'] %}
+{%- if 'predictor-type' in data %}
 --predictor-type
-{{ data['cpsign']['predictor-type'] }}{% endif %}
+{{ data['predictor-type'] }}{% endif %}
 
-{%- if 'sampling-strategy' in data['cpsign'] %}
+{%- if 'sampling-strategy' in data %}
 --sampling-strategy
-{{ data['cpsign']['sampling-strategy'] }}{% endif %}
+{{ data['sampling-strategy'] }}{% endif %}
 
-{%- if 'nr-models' in data['cpsign'] %}
+{%- if 'nr-models' in data %}
 --nr-models
-{{ data['cpsign']['nr-models'] }}{% endif %}
+{{ data['nr-models'] }}{% endif %}
 
-{%- if 'calibration-ratio' in data['cpsign'] %}
+{%- if 'calibration-ratio' in data %}
 --calibration-ratio
-{{ data['cpsign']['calibration-ratio'] }}{% endif %}
+{{ data['calibration-ratio'] }}{% endif %}
 
-{%- if 'stratified' in data['cpsign'] %}
+{%- if 'stratified' in data %}
 --stratified
-{{ data['cpsign']['stratified'] }}{% endif %}
+{{ data['stratified'] }}{% endif %}
 
-{%- if 'seed' in data['cpsign'] %}
+{%- if 'seed' in data %}
 --seed
-{{ data['cpsign']['seed'] }}{% endif %}
+{{ data['seed'] }}{% endif %}
 
-{%- if 'nonconf-measure' in data['cpsign'] %}
+{%- if 'nonconf-measure' in data %}
 --nonconf-measure
-{{ data['cpsign']['nonconf-measure'] }}{% endif %}
+{{ data['nonconf-measure'] }}{% endif %}
 
-{%- if 'nonconf-beta' in data['cpsign'] %}
+{%- if 'nonconf-beta' in data %}
 --nonconf-beta
-{{ data['cpsign']['nonconf-beta'] }}{% endif %}
+{{ data['nonconf-beta'] }}{% endif %}
 
-{%- if 'percentiles' in data['cpsign'] %}
+{%- if 'percentiles' in data %}
 --percentiles
-{{ data['cpsign']['percentiles'] }}{% endif %}
+{{ data['percentiles'] }}{% endif %}
 
-{%- if 'percentilesfile' in data['cpsign'] %}
+{%- if 'percentilesfile' in data %}
 --percentilesfile
-{{ data['cpsign']['percentilesfile'] }}{% endif %}
+{{ data['percentilesfile'] }}{% endif %}
 
-{%- if 'percentiles-data' in data['cpsign'] %}
+{%- if 'percentiles-data' in data %}
 --percentiles-data
-{{ data['cpsign']['percentiles-data'] }}{% endif %}
+{{ data['percentiles-data'] }}{% endif %}
 
-{%- if 'splits' in data['cpsign'] %}
+{%- if 'splits' in data %}
 --splits
-{{ data['cpsign']['splits'] }}{% endif %}
+{{ data['splits'] }}{% endif %}
 
-{%- if 'impl' in data['cpsign'] %}
+{%- if 'impl' in data %}
 --impl
-{{ data['cpsign']['impl'] }}{% endif %}
+{{ data['impl'] }}{% endif %}
 
-{%- if 'cost' in data['cpsign'] %}
+{%- if 'cost' in data %}
 --cost
-{{ data['cpsign']['cost'] }}{% endif %}
+{{ data['cost'] }}{% endif %}
 
-{%- if 'gamma' in data['cpsign'] %}
+{%- if 'gamma' in data %}
 --gamma
-{{ data['cpsign']['gamma'] }}{% endif %}
+{{ data['gamma'] }}{% endif %}
 
-{%- if 'epsilon' in data['cpsign'] %}
+{%- if 'epsilon' in data %}
 --epsilon
-{{ data['cpsign']['epsilon'] }}{% endif %}
+{{ data['epsilon'] }}{% endif %}
 
-{%- if 'epsilon-svr' in data['cpsign'] %}
+{%- if 'epsilon-svr' in data %}
 --epsilon-svr
-{{ data['cpsign']['epsilon-svr'] }}{% endif %}
+{{ data['epsilon-svr'] }}{% endif %}
 
-{%- if 'confidences' in data['cpsign'] %}
+{%- if 'confidences' in data %}
 --confidences
-{{ data['cpsign']['confidences'] }}{% endif %}
+{{ data['confidences'] }}{% endif %}
 
-{%- if 'distances' in data['cpsign'] %}
+{%- if 'distances' in data %}
 --distances
-{{ data['cpsign']['distances'] }}{% endif %}
+{{ data['distances'] }}{% endif %}
 
-{%- if 'calculate-gradient' in data['cpsign'] %}
+{%- if 'calculate-gradient' in data %}
 --calculate-gradient
-{{ data['cpsign']['calculate-gradient'] }}{% endif %}
+{{ data['calculate-gradient'] }}{% endif %}
 
-{%- if 'cv-folds' in data['cpsign'] %}
+{%- if 'cv-folds' in data %}
 --cv-folds
-{{ data['cpsign']['cv-folds'] }}{% endif %}
+{{ data['cv-folds'] }}{% endif %}
 
-{%- if 'calibration-points' in data['cpsign'] %}
+{%- if 'calibration-points' in data %}
 --calibration-points
-{{ data['cpsign']['calibration-points'] }}{% endif %}
+{{ data['calibration-points'] }}{% endif %}
 
-{%- if 'calibration-points-width' in data['cpsign'] %}
+{%- if 'calibration-points-width' in data %}
 --calibration-points-width{% endif %}
 
-{%- if 'gradient-images' in data['cpsign'] %}
+{%- if 'gradient-images' in data %}
 --gradient-images{% endif %}
 
-{%- if 'image-file' in data['cpsign'] %}
+{%- if 'image-file' in data %}
 --image-file
-{{ data['cpsign']['image-file'] }}{% endif %}
+{{ data['image-file'] }}{% endif %}
 
-{%- if 'images' in data['cpsign'] %}
+{%- if 'images' in data %}
 --images
-{{ data['cpsign']['images'] }}{% endif %}
+{{ data['images'] }}{% endif %}
 
-{%- if 'imagefile' in data['cpsign'] %}
+{%- if 'imagefile' in data %}
 --imagefile
-{{ data['cpsign']['imagefile'] }}{% endif %}
+{{ data['imagefile'] }}{% endif %}
 
-{%- if 'color-sign-only' in data['cpsign'] %}
+{%- if 'color-sign-only' in data %}
 --color-sign-only
-{{ data['cpsign']['color-sign-only'] }}{% endif %}
+{{ data['color-sign-only'] }}{% endif %}
 
-{%- if 'color-scheme' in data['cpsign'] %}
+{%- if 'color-scheme' in data %}
 --color-scheme
-{{ data['cpsign']['color-scheme'] }}{% endif %}
+{{ data['color-scheme'] }}{% endif %}
 
-{%- if 'color-legend' in data['cpsign'] %}
+{%- if 'color-legend' in data %}
 --color-legend{% endif %}
 
-{%- if 'custom-scheme' in data['cpsign'] %}
+{%- if 'custom-scheme' in data %}
 --custom-scheme
-{{ data['cpsign']['custom-scheme'] }}{% endif %}
+{{ data['custom-scheme'] }}{% endif %}
 
-{%- if 'atom-numbers' in data['cpsign'] %}
+{%- if 'atom-numbers' in data %}
 --atom-numbers{% endif %}
 
-{%- if 'atom-number-color' in data['cpsign'] %}
+{%- if 'atom-number-color' in data %}
 --atom-number-color
-{{ data['cpsign']['atom-number-color'] }}{% endif %}
+{{ data['atom-number-color'] }}{% endif %}
 
-{%- if 'image-height' in data['cpsign'] %}
+{%- if 'image-height' in data %}
 --image-height
-{{ data['cpsign']['image-height'] }}{% endif %}
+{{ data['image-height'] }}{% endif %}
 
-{%- if 'image-width' in data['cpsign'] %}
+{%- if 'image-width' in data %}
 --image-width
-{{ data['cpsign']['image-width'] }}{% endif %}
+{{ data['image-width'] }}{% endif %}
 
-{%- if 'signature-images' in data['cpsign'] %}
+{%- if 'signature-images' in data %}
 --signature-images
-{{ data['cpsign']['signature-images'] }}{% endif %}
+{{ data['signature-images'] }}{% endif %}
 
-{%- if 'signature-image-file' in data['cpsign'] %}
+{%- if 'signature-image-file' in data %}
 --signature-image-file
-{{ data['cpsign']['signature-image-file'] }}{% endif %}
+{{ data['signature-image-file'] }}{% endif %}
 
-{%- if 'highlight-color' in data['cpsign'] %}
+{%- if 'highlight-color' in data %}
 --highlight-color
-{{ data['cpsign']['highlight-color'] }}{% endif %}
+{{ data['highlight-color'] }}{% endif %}
 
-{%- if 'signature-color-legend' in data['cpsign'] %}
+{%- if 'signature-color-legend' in data %}
 --signature-color-legend{% endif %}
 
-{%- if 'signature-atom-numbers' in data['cpsign'] %}
+{%- if 'signature-atom-numbers' in data %}
 --signature-atom-numbers{% endif %}
 
-{%- if 'signature-atom-number-color' in data['cpsign'] %}
+{%- if 'signature-atom-number-color' in data %}
 --signature-atom-number-color
-{{ data['cpsign']['signature-atom-number-color'] }}{% endif %}
+{{ data['signature-atom-number-color'] }}{% endif %}
 
-{%- if 'signature-image-height' in data['cpsign'] %}
+{%- if 'signature-image-height' in data %}
 --signature-image-height
-{{ data['cpsign']['signature-image-height'] }}{% endif %}
+{{ data['signature-image-height'] }}{% endif %}
 
-{%- if 'signature-image-width' in data['cpsign'] %}
+{%- if 'signature-image-width' in data %}
 --signature-image-width
-{{ data['cpsign']['signature-image-width'] }}{% endif %}
+{{ data['signature-image-width'] }}{% endif %}

@@ -1,29 +1,55 @@
 {
     "workflow_name": "hERG",
-    "database": {
-        "host": "chembl-mysql",
-        "user": "root",
-        "db_name": "chembl_24"
+    "preprocessing": {
+        "database": {
+            "host": "chembl-mysql",
+            "user": "root",
+            "db_name": "chembl_24"
+        },
+        "query": {
+            "database_query": "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
+            "query_columns": [
+                null
+            ],
+            "query_limit": null,
+            "smi_columns": [
+                "canonical_smiles, acd_logd"
+            ],
+            "smi_filename": "chembl_training_data.smi"
+        }
     },
-    "query": {
-        "database_query": "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
-        "query_limit": null,
-        "smi_columns": [
-            "canonical_smiles, acd_logd"
-        ],
-        "smi_filename": "chembl_training_data.smi"
+    "cpsign-version": "0.7.12",
+
+    "precompute": {
+        "model-type": 1,
+        "model-name": "hERG_test"
     },
-    "parallellism": {
-        "splits_per_model": 1
-    },
-    "cpsign-version": "0.7.7",
-    "cpsign": {
+
+    "crossvalidate": {
         "ptype": 1,
+        "nr-models": 1,
         "impl": "liblinear",
-        "nr-models": 5,
-        "cost": 1,
-        "model-name": "LogD_full_split",
         "nonconf-measure": "normalized",
-        "epsilon": 0.0001
+        "gridsearch": {
+            "cost-range": [-4,12,2],
+            "gamma-range": [-8,-1,2],
+            "epsilon": [0.001]
+        }
+    },
+
+    "train": {
+        "ptype": 1,
+        "nr-models": 1,
+        "impl": "liblinear",
+        "nonconf-measure": "normalized",
+        "model-name": "hERG_test",
+        "parallellism": {
+            "splits_per_job": 1
+        }
+    },
+
+    "cpsign": {
+        "labels": "[0,1]",
+        "endpoint": "herg test model"
     }
 }
