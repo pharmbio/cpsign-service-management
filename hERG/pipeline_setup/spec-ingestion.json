@@ -2,7 +2,7 @@
     "input": {
         "atom": {
             "glob": "/",
-            "repo": "hERG_config"
+            "repo": "hERG-config"
         }
     },
     "pipeline": {
@@ -10,18 +10,18 @@
     },
     "resource_limits": {
         "cpu": 2,
-        "memory": "8G"
+        "memory": "4G"
     },
     "resource_requests": {
         "cpu": 1,
-        "memory": "2G"
+        "memory": "1G"
     },
     "standby": false,
     "transform": {
         "cmd": [
             "/bin/bash"
         ],
-        "image": "pharmbio/cpsign-database-ingestion:herg_test5",
+        "image": "pharmbio/cpsign-database-ingestion:herg_test10",
         "secrets": [
             {
                 "mount_path": "/etc/creds/",
@@ -29,7 +29,8 @@
             }
         ],
         "stdin": [
-            "python3 data_ingestion.py"
+            "python3 data_preparation.py",
+            "python3 parameter_file_preparation.py"
         ]
     }
 }
