@@ -2,26 +2,26 @@
     "input": {
         "atom": {
             "glob": "/",
-            "repo": "LogD-ingestion"
+            "repo": "hERG-ingestion"
         }
     },
     "pipeline": {
-        "name": "LogD-precompute"
+        "name": "hERG-precompute"
     },
     "resource_limits": {
         "cpu": 4,
-        "memory": "24G"
+        "memory": "4G"
     },
     "resource_requests": {
         "cpu": 2,
-        "memory": "12G"
+        "memory": "1G"
     },
-    "standby": true,
+    "standby": false,
     "transform": {
         "cmd": [
             "/bin/bash"
         ],
-        "image": "pharmbio/cpsign-docker:c0.7.7",
+        "image": "pharmbio/cpsign-docker:c0.7.12",
         "secrets": [
             {
                 "mount_path": "/mnt/lic/",
@@ -29,7 +29,7 @@
             }
         ],
         "stdin": [
-            "java -jar -Xmx20G cpsign-0.7.7.jar precompute --license /mnt/lic/license @/pfs/LogD-ingestion/precompute/params.txt > /pfs/out/stdout.txt"
+            "java -jar cpsign-0.7.12.jar precompute --license /mnt/lic/license @/pfs/hERG-ingestion/precompute/params.txt > /pfs/out/stdout.txt"
         ]
     }
 }

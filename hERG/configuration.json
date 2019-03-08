@@ -7,13 +7,13 @@
             "db_name": "chembl_24"
         },
         "query": {
-            "database_query": "SELECT cs.canonical_smiles, cp.acd_logd FROM compound_structures cs, compound_properties cp  WHERE cs.molregno = cp.molregno{};",
+            "database_query": "SELECT DISTINCT t.pref_name, cs.canonical_smiles, ac.standard_type, ac.standard_value, ac.standard_units, a.confidence_score FROM compound_structures cs, activities ac, assays a, target_dictionary t WHERE cs.molregno = ac.molregno AND ac.assay_id = a.assay_id AND a.assay_type = 'B' AND ac.standard_relation = '=' AND a.tid = t.tid AND t.target_type = 'SINGLE PROTEIN' AND ( (ac.standard_type = 'IC50' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'Ki' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'EC50' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'Log Ki' AND ac.standard_units IS NULL) OR (ac.standard_type = 'Kd' AND ac.standard_units = 'nM' ) OR (ac.standard_type = 'Log IC50' AND ac.standard_units IS NULL) ) AND t.organism = 'Homo sapiens' AND t.pref_name = 'HERG'  {};",
             "query_columns": [
-                null
+                "pref_name", "canonical_smiles", "standard_type", "standard_value", "standard_units", "confidence_score"
             ],
             "query_limit": null,
             "smi_columns": [
-                "canonical_smiles, acd_logd"
+                "canonical_smiles", "class"
             ],
             "smi_filename": "chembl_training_data.smi"
         }
@@ -27,7 +27,7 @@
 
     "crossvalidate": {
         "ptype": 1,
-        "nr-models": 1,
+        "nr-models": 20,
         "impl": "liblinear",
         "nonconf-measure": "normalized",
         "gridsearch": {
@@ -39,17 +39,17 @@
 
     "train": {
         "ptype": 1,
-        "nr-models": 1,
+        "nr-models": 20,
         "impl": "liblinear",
         "nonconf-measure": "normalized",
         "model-name": "hERG_test",
-        "parallellism": {
-            "splits_per_job": 1
+        "parallelism": {
+            "splits_per_job": 2
         }
     },
 
     "cpsign": {
         "labels": "[0,1]",
-        "endpoint": "herg test model"
+        "endpoint": "class"
     }
 }

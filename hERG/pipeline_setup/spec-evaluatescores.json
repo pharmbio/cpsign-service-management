@@ -1,0 +1,51 @@
+{
+    "input": {
+        "cross": [
+            {
+                "atom": {
+                    "glob": "/",
+                    "repo": "hERG-ingestion"
+                }
+            },
+            {
+                "atom": {
+                    "glob": "/",
+                    "repo": "hERG-config"
+                }
+            },
+            {
+                "atom": {
+                    "glob": "/",
+                    "repo": "hERG-crossvalidate"
+                }
+            }
+        ]
+    },
+    "pipeline": {
+        "name": "hERG-evaluatescores"
+    },
+    "resource_limits": {
+        "cpu": 2,
+        "memory": "4G"
+    },
+    "resource_requests": {
+        "cpu": 1,
+        "memory": "1G"
+    },
+    "standby": false,
+    "transform": {
+        "cmd": [
+            "/bin/bash"
+        ],
+        "image": "pharmbio/cpsign-crossvalidate-evaluator:herg_test7",
+        "secrets": [
+            {
+                "mount_path": "/etc/creds/",
+                "name": "chembl-mysql"
+            }
+        ],
+        "stdin": [
+            "python3 score_selector.py"
+        ]
+    }
+}

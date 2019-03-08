@@ -3,8 +3,8 @@
         "cross": [
             {
                 "atom": {
-                    "glob": "/training/*",
-                    "repo": "hERG-evaluatescores"
+                    "glob": "/crossvalidate_datums/*",
+                    "repo": "hERG-ingestion"
                 }
             },
             {
@@ -19,15 +19,15 @@
         "constant": 10
     },
     "pipeline": {
-        "name": "hERG-train"
+        "name": "hERG-crossvalidate"
     },
     "resource_limits": {
-        "cpu": 4,
-        "memory": "8G"
+        "cpu": 2,
+        "memory": "4G"
     },
     "resource_requests": {
         "cpu": 1,
-        "memory": "2G"
+        "memory": "1G"
     },
     "standby": false,
     "transform": {
@@ -43,10 +43,11 @@
         ],
         "stdin": [
             "mkdir -p /pfs/out/logs",
+            "mkdir -p /pfs/out/scores",
             "touch /pfs/out/logs/stdout.txt",
             "echo '\n-------------\n' >> /pfs/out/logs/stdout.txt",
-            "export PARAMS_FILE=/pfs/hERG-evaluatescores/training/$(ls /pfs/hERG-evaluatescores/training/)",
-            "java -jar cpsign-0.7.12.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
+            "export PARAMS_FILE=/pfs/hERG-ingestion/crossvalidate_datums/$(ls /pfs/hERG-ingestion/crossvalidate_datums/)",
+            "java -jar cpsign-0.7.12.jar crossvalidate --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
         ]
     }
 }
