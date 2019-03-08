@@ -28,7 +28,7 @@ except FileNotFoundError:
     print("Config file does not exist, this probably won't work...")
     #TODO: create exit mechanism that functions from pachyderm worker and stores logs/stderr
 
-smi_file_name = configuration["query"]["smi_filename"]
+smi_file_name = configuration["preprocessing"]["query"]["smi_filename"]
 
 
 # Generate params template with jinja2
@@ -111,7 +111,7 @@ parallelism = training.get("parallelism", False)
 if parallelism:
     # train parameter files depend on parallelism and splits in config
     nr_models = training["nr-models"]
-    splits = training["parallelism"]["splits_per_job"]
+    splits = parallelism["splits_per_job"]
     num_of_files = ceil(nr_models/splits)
     for i in range(1, num_of_files+1):
         parallel_train_file_content = "" + train_file_content

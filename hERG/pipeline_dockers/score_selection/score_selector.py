@@ -43,6 +43,7 @@ for parameter in parameters:
 
 print("Found best efficieny with following parameters: \n{}".format(parameter_arguments))
 
+makedirs("/pfs/out/training", exist_ok=True)
 train_file_directory = "/pfs/{}-ingestion/training/".format(configuration['workflow_name'])
 for train_file in listdir(train_file_directory):
     with open(train_file_directory + train_file, 'r') as origin, open("/pfs/out/training/" + train_file, 'w') as new:

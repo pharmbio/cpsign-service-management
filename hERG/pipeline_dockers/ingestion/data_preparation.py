@@ -52,18 +52,19 @@ for row in result:
     line = "".join(["{}\t".format(value if not isinstance(value, Decimal) else value.to_eng_string()) for value in row])[:-1] + "\n"
     lines.append(line)
 
+makedirs("/pfs/out/data", exist_ok=True)
+
 # Write data to file
 smi_file_name = preprocess_config["query"]["smi_filename"]
 if result:
-    makedirs("/pfs/out/data", exist_ok=True)
-    with open("/pfs/out/data/{}.csv".format(smi_file_name), "w") as output:
+    print("Got data from SQL query, formatting...")
+    with open("tmp.csv", "w") as output:
         output.writelines(lines)
         output.flush()
 
-with open("/pfs/out/data/{}.csv".format(smi_file_name),'r') as f:
+with open("tmp.csv",'r') as f:
     df = pd.read_csv(f, sep='\t')
     D={}
-    print(df)
     num_lines = len(df.axes[0])
     for i in range(0, num_lines-2):
         df.iloc[i, 0] = df.iloc[i, 0].replace('/','-')
@@ -92,6 +93,7 @@ with open("/pfs/out/data/{}.csv".format(smi_file_name),'r') as f:
                 D.setdefault(df.iloc[j,0],[]).append('1\n')
     for key,value in D.items():
         smi_header = "".join([value+"\t" for value in preprocess_config["query"]["smi_columns"]])[:-1] + "\n"
-        with open("/pfs/out/data/" + smi_file_name + '.smi', 'w+') as f:
-            f.writelines([smi_header])
-            f.write(''.join(value))
+        with open("/pfs/out/data/" + smi_file_name, 'w') as out:
+            out.writelines([smi_header])
+            out.write(''.join(value))
+            print("Wrote file {}!".format("/pfs/out/data/" + smi_file_name))
