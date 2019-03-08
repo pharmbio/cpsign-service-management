@@ -10,6 +10,7 @@ except FileNotFoundError:
 
 
 # iterate over all score files
+#TODO: check lowest cost if multiple of same lowest efficiency
 scores_directory = "/pfs/{}-crossvalidate/scores/".format(configuration['workflow_name'])
 efficiency = 1.0
 best_score = ""
