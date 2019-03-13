@@ -17,7 +17,7 @@ def write_to_pfs(filename, content, subfolder, create_subfolder=True):
 def range_generator(range_list):
     [start, stop, step] = range_list
     exponents = append(arange(start, stop, step), stop)
-    return list(2**exponents)
+    return list(2.0**exponents)
 
 
 configuration = None
@@ -128,7 +128,8 @@ if parallelism:
     for i in range(1, num_of_files+1):
         parallel_train_file_content = "" + train_file_content
         index_current_file = (i-1)*splits+1
-        file_splits = str(list(range(index_current_file, index_current_file+splits))).replace(" ", "")
+        end_current_file = index_current_file + splits if i < num_of_files else index_current_file + nr_models % splits
+        file_splits = str(list(range(index_current_file, end_current_file))).replace(" ", "")
         # FIXME: uneven splits with even nr models yelds wrong filerange?
         additional_train_params = [
             "\n--model-out\n/pfs/out/models/partial_model_{}.jar".format(i),
