@@ -3,6 +3,7 @@ from json import load
 from os import makedirs
 from math import ceil
 from time import time
+from numpy import arange, append
 
 
 
@@ -15,9 +16,8 @@ def write_to_pfs(filename, content, subfolder, create_subfolder=True):
 
 def range_generator(range_list):
     [start, stop, step] = range_list
-    exponents = list(range(start, stop, step))
-    exponents.append(stop)
-    return [2**x for x in exponents]
+    exponents = append(arange(start, stop, step), stop)
+    return list(2**exponents)
 
 
 configuration = None
