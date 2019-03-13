@@ -71,27 +71,39 @@ if crossvalidate:
         crossvalidate_file_content += line
 
     # prepare parameter ranges for combinations of params
-    cost_range =  range_generator(gridsearch["cost-range"]) if gridsearch.get("cost-range", False) else gridsearch["cost"]
-    gamma_range =  range_generator(gridsearch["gamma-range"]) if gridsearch.get("gamma-range", False)  else gridsearch["gamma"]
+    cost_range = range_generator(gridsearch["cost-range"]) if gridsearch.get("cost-range", False) else gridsearch["cost"]
+    gamma_range = range_generator(gridsearch["gamma-range"]) if gridsearch.get("gamma-range", False) else gridsearch["gamma"]
     epsilon_range = range_generator(gridsearch["epsilon-range"]) if gridsearch.get("epsilon-range", False) else gridsearch["epsilon"]
+    epsilon_svr_range = range_generator(gridsearch["epsilon-svr-range"]) if gridsearch.get("epsilon-svr-range", False) else gridsearch["epsilon-svr"]
+
+    if crossvalidate.get('nonconf-measure') == "log-normalized":
+        beta_range = range_generator(gridsearch["beta-range"]) if gridsearch.get("beta-range", False) else gridsearch["beta"]
+    else:
+        beta_range = ['NA']
 
     # create parameter file for each combination of gamma, epsilon and cost
     for cost in cost_range:
-        for gamma in gamma_range:
-            for epsilon in epsilon_range:
-                datum_name = "g{}_e{}_c{}".format(gamma, epsilon, cost)
+        for beta in beta_range:
+            for gamma in gamma_range:
+                for epsilon in epsilon_range:
+                    for epsilon_svr in epsilon_svr_range:
 
-                datum_crossvalidate_file_content = \
-                    "{} \
-                    \n--output\n/pfs/out/scores/scores__{}__.json \
-                    \n--logfile\n/pfs/out/logs/datum_{}_logfile.log \
-                    \n--cost\n{} \
-                    \n--gamma\n{} \
-                    \n--epsilon\n{}".format(
-                        crossvalidate_file_content, datum_name, datum_name, cost, gamma, epsilon
-                    )
 
-                write_to_pfs("params_{}.txt".format(datum_name), datum_crossvalidate_file_content, "crossvalidate_datums")
+                        datum_name = "g{}_e{}_c{}_E{}{}".format(gamma, epsilon, cost, epsilon_svr, "_b{}".format(beta) if not beta == 'NA' else "")
+                        beta_param_string = "\n--beta\n{}".format(beta) if not beta == 'NA' else ""
+
+                        datum_crossvalidate_file_content = \
+                            "{} \
+                            \n--output\n/pfs/out/scores/scores__{}__.json \
+                            \n--logfile\n/pfs/out/logs/datum_{}_logfile.log \
+                            \n--cost\n{} \
+                            \n--gamma\n{} \
+                            \n--epsilon\n{} \
+                            \n--epsilon-svr\n{}".format(
+                                crossvalidate_file_content, datum_name, datum_name, cost, gamma, epsilon, epsilon_svr
+                            ) + beta_param_string
+
+                        write_to_pfs("params_{}.txt".format(datum_name), datum_crossvalidate_file_content, "crossvalidate_datums")
 
 
 # training block
