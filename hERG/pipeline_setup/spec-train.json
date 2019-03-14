@@ -44,9 +44,10 @@
         "stdin": [
             "mkdir -p /pfs/out/logs",
             "touch /pfs/out/logs/stdout.txt",
-            "echo '\n-------------\n' >> /pfs/out/logs/stdout.txt",
+            "echo '\n-------------\n' >> tmp-stdout.txt",
             "export PARAMS_FILE=/pfs/hERG-evaluatescores/training/$(ls /pfs/hERG-evaluatescores/training/)",
-            "java -jar cpsign-0.7.12.jar train --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
+            "java -jar cpsign-0.7.12.jar train --license /mnt/lic/license @$PARAMS_FILE >> tmp-stdout.txt",
+            "cat tmp-stdout.txt >> /pfs/out/logs/stdout.txt"
         ]
     }
 }

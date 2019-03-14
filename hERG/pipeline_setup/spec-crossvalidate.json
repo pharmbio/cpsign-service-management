@@ -45,9 +45,10 @@
             "mkdir -p /pfs/out/logs",
             "mkdir -p /pfs/out/scores",
             "touch /pfs/out/logs/stdout.txt",
-            "echo '\n-------------\n' >> /pfs/out/logs/stdout.txt",
+            "echo '\n-------------\n' >> tmp-stdout.txt",
             "export PARAMS_FILE=/pfs/hERG-ingestion/crossvalidate_datums/$(ls /pfs/hERG-ingestion/crossvalidate_datums/)",
-            "java -jar cpsign-0.7.12.jar crossvalidate --license /mnt/lic/license @$PARAMS_FILE >> /pfs/out/logs/stdout.txt"
+            "java -jar cpsign-0.7.12.jar crossvalidate --license /mnt/lic/license @$PARAMS_FILE >> tmp-stdout.txt",
+            "cat tmp-stdout.txt >> /pfs/out/logs/stdout.txt"
         ]
     }
 }
