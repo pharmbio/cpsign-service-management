@@ -10,11 +10,11 @@
     },
     "resource_limits": {
         "cpu": 4,
-        "memory": "4G"
+        "memory": "8G"
     },
     "resource_requests": {
         "cpu": 2,
-        "memory": "1G"
+        "memory": "2G"
     },
     "standby": false,
     "transform": {

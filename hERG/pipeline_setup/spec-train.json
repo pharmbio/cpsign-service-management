@@ -16,7 +16,7 @@
         ]
     },
     "parallelism_spec": {
-        "constant": 10
+        "constant": 1
     },
     "pipeline": {
         "name": "hERG-train"

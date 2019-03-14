@@ -27,29 +27,31 @@
 
     "crossvalidate": {
         "ptype": 1,
-        "nr-models": 20,
+        "nr-models": 1,
         "impl": "liblinear",
         "nonconf-measure": "normalized",
         "gridsearch": {
             "cost-range": [-4,12,2],
             "gamma-range": [-8,-1,2],
-            "epsilon": [0.001]
+            "epsilon": [0.001],
+            "epsilon-svr": [0.1]
         }
     },
 
     "train": {
         "ptype": 1,
-        "nr-models": 20,
+        "nr-models": 10,
         "impl": "liblinear",
         "nonconf-measure": "normalized",
         "model-name": "hERG_test",
         "parallelism": {
-            "splits_per_job": 2
+            "splits_per_job": 3
         }
     },
 
     "cpsign": {
         "labels": "[0,1]",
-        "endpoint": "class"
+        "endpoint": "class",
+        "time": ""
     }
 }

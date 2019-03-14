@@ -9,8 +9,8 @@
         "name": "hERG-ingestion"
     },
     "resource_limits": {
-        "cpu": 2,
-        "memory": "4G"
+        "cpu": 4,
+        "memory": "8G"
     },
     "resource_requests": {
         "cpu": 1,
@@ -21,7 +21,7 @@
         "cmd": [
             "/bin/bash"
         ],
-        "image": "pharmbio/cpsign-database-ingestion:herg_test10",
+        "image": "pharmbio/cpsign-database-ingestion:herg_test13",
         "secrets": [
             {
                 "mount_path": "/etc/creds/",
