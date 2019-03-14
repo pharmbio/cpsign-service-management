@@ -90,7 +90,7 @@ if crossvalidate:
 
 
                         datum_name = "g{}_e{}_c{}_E{}{}".format(gamma, epsilon, cost, epsilon_svr, "_b{}".format(beta) if not beta == 'NA' else "")
-                        beta_param_string = "\n--beta\n{}".format(beta) if not beta == 'NA' else ""
+                        beta_param_string = "\n--nonconf-beta\n{}".format(beta) if not beta == 'NA' else ""
 
                         datum_crossvalidate_file_content = \
                             "{} \
