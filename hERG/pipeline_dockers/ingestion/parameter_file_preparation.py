@@ -3,6 +3,7 @@ from json import load
 from os import makedirs
 from math import ceil
 from time import time
+from numpy import arange, append
 
 
 
@@ -15,9 +16,8 @@ def write_to_pfs(filename, content, subfolder, create_subfolder=True):
 
 def range_generator(range_list):
     [start, stop, step] = range_list
-    exponents = list(range(start, stop, step))
-    exponents.append(stop)
-    return [2**x for x in exponents]
+    exponents = append(arange(start, stop, step), stop)
+    return list(2.0**exponents)
 
 
 configuration = None
@@ -28,7 +28,7 @@ except FileNotFoundError:
     print("Config file does not exist, this probably won't work...")
     #TODO: create exit mechanism that functions from pachyderm worker and stores logs/stderr
 
-smi_file_name = configuration["query"]["smi_filename"]
+smi_file_name = configuration["preprocessing"]["query"]["smi_filename"]
 
 
 # Generate params template with jinja2
@@ -71,27 +71,39 @@ if crossvalidate:
         crossvalidate_file_content += line
 
     # prepare parameter ranges for combinations of params
-    cost_range =  range_generator(gridsearch["cost-range"]) if gridsearch.get("cost-range", False) else gridsearch["cost"]
-    gamma_range =  range_generator(gridsearch["gamma-range"]) if gridsearch.get("gamma-range", False)  else gridsearch["gamma"]
+    cost_range = range_generator(gridsearch["cost-range"]) if gridsearch.get("cost-range", False) else gridsearch["cost"]
+    gamma_range = range_generator(gridsearch["gamma-range"]) if gridsearch.get("gamma-range", False) else gridsearch["gamma"]
     epsilon_range = range_generator(gridsearch["epsilon-range"]) if gridsearch.get("epsilon-range", False) else gridsearch["epsilon"]
+    epsilon_svr_range = range_generator(gridsearch["epsilon-svr-range"]) if gridsearch.get("epsilon-svr-range", False) else gridsearch["epsilon-svr"]
+
+    if crossvalidate.get('nonconf-measure') == "log-normalized":
+        beta_range = range_generator(gridsearch["beta-range"]) if gridsearch.get("beta-range", False) else gridsearch["beta"]
+    else:
+        beta_range = ['NA']
 
     # create parameter file for each combination of gamma, epsilon and cost
     for cost in cost_range:
-        for gamma in gamma_range:
-            for epsilon in epsilon_range:
-                datum_name = "g{}_e{}_c{}".format(gamma, epsilon, cost)
+        for beta in beta_range:
+            for gamma in gamma_range:
+                for epsilon in epsilon_range:
+                    for epsilon_svr in epsilon_svr_range:
 
-                datum_crossvalidate_file_content = \
-                    "{} \
-                    \n--output\n/pfs/out/scores/scores__{}__.json \
-                    \n--logfile\n/pfs/out/logs/datum_{}_logfile.log \
-                    \n--cost\n{} \
-                    \n--gamma\n{} \
-                    \n--epsilon\n{}".format(
-                        crossvalidate_file_content, datum_name, datum_name, cost, gamma, epsilon
-                    )
 
-                write_to_pfs("params_{}.txt".format(datum_name), datum_crossvalidate_file_content, "crossvalidate_datums")
+                        datum_name = "g{}_e{}_c{}_E{}{}".format(gamma, epsilon, cost, epsilon_svr, "_b{}".format(beta) if not beta == 'NA' else "")
+                        beta_param_string = "\n--beta\n{}".format(beta) if not beta == 'NA' else ""
+
+                        datum_crossvalidate_file_content = \
+                            "{} \
+                            \n--output\n/pfs/out/scores/scores__{}__.json \
+                            \n--logfile\n/pfs/out/logs/datum_{}_logfile.log \
+                            \n--cost\n{} \
+                            \n--gamma\n{} \
+                            \n--epsilon\n{} \
+                            \n--epsilon-svr\n{}".format(
+                                crossvalidate_file_content, datum_name, datum_name, cost, gamma, epsilon, epsilon_svr
+                            ) + beta_param_string
+
+                        write_to_pfs("params_{}.txt".format(datum_name), datum_crossvalidate_file_content, "crossvalidate_datums")
 
 
 # training block
@@ -111,12 +123,13 @@ parallelism = training.get("parallelism", False)
 if parallelism:
     # train parameter files depend on parallelism and splits in config
     nr_models = training["nr-models"]
-    splits = training["parallelism"]["splits_per_job"]
+    splits = parallelism["splits_per_job"]
     num_of_files = ceil(nr_models/splits)
     for i in range(1, num_of_files+1):
         parallel_train_file_content = "" + train_file_content
         index_current_file = (i-1)*splits+1
-        file_splits = str(list(range(index_current_file, index_current_file+splits))).replace(" ", "")
+        end_current_file = index_current_file + splits if i < num_of_files else index_current_file + nr_models % splits
+        file_splits = str(list(range(index_current_file, end_current_file))).replace(" ", "")
         # FIXME: uneven splits with even nr models yelds wrong filerange?
         additional_train_params = [
             "\n--model-out\n/pfs/out/models/partial_model_{}.jar".format(i),
